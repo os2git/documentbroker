@@ -4,8 +4,7 @@ import urllib
 
 from client.template_client import TemplateServer
 from client.documentbroker_settings import TEMPLATE_URL, TEMPLATE_BASE_URL
-from configuration.models import PluginMapping
-from util.document_plugin import PluginManager
+from configuration import PluginMapping
 
 class DocumentBroker(object):
     """This class is not really a Django model. Rather, it implements a proxy
@@ -45,17 +44,6 @@ class DocumentBroker(object):
 
         # Finally generate document, store in appropriate place and 
         # return URL.
-
-        # Get plugin.
-        plugin_mapping = PluginMapping.objects.filter(
-                extension=extension.strip('.').upper()
-                )[0]
-        plugin = PluginManager.get_plugin(plugin_mapping.plugin)
-
-        # TODO: Get fields
-        fields = { 'Hello' : 1 }
-        # TODO: Get output file name
-        output_file = '/tmp/dummy.odt'
-        raise RuntimeError("Not implemented: {0}".format(plugin_mapping))
+        raise RuntimeError("Not implemented: {0}".format(url))
         return ""
 

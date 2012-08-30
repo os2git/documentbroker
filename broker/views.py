@@ -10,10 +10,6 @@ import sys
 from configuration.models import ClientSystem
 
 
-def get_client_systems():
-    client_systems = ClientSystem.objects.all()
-    return  { c.name : c.uuid for c in client_systems }
-
 def authorize(client_id, password):
     """Authorize client and return control block to be used in subsequent API
     calls."""
@@ -23,7 +19,12 @@ def authorize(client_id, password):
         raise RuntimeError(_('Authorization failed'))
 
 @authorized
-def generate(user_authentication, template_id, fields):
+def get_client_systems(user_authentication):
+    client_systems = ClientSystem.objects.all()
+    return  { c.name : c.uuid for c in client_systems }
+
+@authorized
+def generate_document(user_authentication, template_id, fields):
     """Get template from template server and generates document.
     Store document in suitable place and return URL to retrieve it."""
     

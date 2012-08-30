@@ -4,6 +4,7 @@ import hashlib
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from util.document_plugin import PluginManager
 
 # Create your models here.
 
@@ -43,7 +44,21 @@ class ClientSystem(models.Model):
         pass
 
 
+class PluginMapping(models.Model):
+    """This class maps from file name extensions to document plugins. This
+    means we use the extensions to specify the plugin. This also mean we don't
+    allow these extensions to overlap, e.g. if one soite wishes to use them in
+    a non-standard way. If this ever becomes a problem, the plugin spec should
+    follow the document, not the extension."""
+    plugins = PluginManager.list_plugins()
+    extension = models.CharField(_('Extension'), max_length=16, unique=True)
+    plugin = models.CharField(
+            _('Plugin'), 
+            max_length=255, 
+            choices=[(k,v.__doc__) for k,v in plugins.items()])
 
+    def __unicode__(self):
+        return self.extension
 
 
 

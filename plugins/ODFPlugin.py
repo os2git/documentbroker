@@ -2,10 +2,11 @@
 
 import sys
 
-from util.document_plugin import DocumentPlugin
+from document_plugin import DocumentPlugin
 from util.odf_generator import generate_odf
 
 class ODFPlugin(DocumentPlugin):
+    """ODF Document Plugin"""
 
     def __init__(self):
         """ODF related initialization, if any."""
