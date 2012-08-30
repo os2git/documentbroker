@@ -1,5 +1,7 @@
 
 from django.contrib import admin
+from django.contrib.auth.models import Group
+from django.contrib.sites.models import Site
 
 from models import Client, ClientSystem
 
@@ -15,5 +17,10 @@ class ClientSystemAdmin(admin.ModelAdmin):
 
 admin.site.register(Client, ClientAdmin)
 admin.site.register(ClientSystem, ClientSystemAdmin)
+
+# Remove default site and group to unclutter admin interface.
+admin.site.unregister(Site)
+admin.site.unregister(Group)
+
 
     
