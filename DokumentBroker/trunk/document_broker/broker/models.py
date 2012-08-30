@@ -70,5 +70,18 @@ class DocumentBroker(object):
         output_url = settings.MEDIA_URL + 'files/' + output_file
         #raise RuntimeError("Not implemented: {0}".format(output_url))
         plugin.generate_document(tmp_name, output_path, field_data)
+
         return BROKER_BASE_URL + output_url
+
+    def acknowledge(self, document_url):
+        file_name = document_url.split('/').pop()
+        file_path = os.path.join(settings.MEDIA_ROOT, 
+                os.path.join('files', file_name))
+        try:
+            os.remove(file_path)
+        except OSError:
+            # TODO: Log this.
+            pass
+        return 0
+
 
