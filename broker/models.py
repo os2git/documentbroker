@@ -73,7 +73,7 @@ class DocumentBroker(object):
 
         return BROKER_BASE_URL + output_url
 
-    def acknowledge(self, document_url):
+    def acknowledge_document(self, document_url):
         file_name = document_url.split('/').pop()
         file_path = os.path.join(settings.MEDIA_ROOT, 
                 os.path.join('files', file_name))
