@@ -7,11 +7,11 @@ class PDFPlugin(DocumentPlugin):
     """PDF Document Plugin"""
 
     def __init__(self):
-        """ODF related initialization, if any."""
+        """PDF related initialization, if any."""
         pass
 
-    def generate(self, template_file, output_path, fields):
-        """Generate ODF document from template.
+    def generate_document(self, template_file, output_path, fields):
+        """Generate PDF document from template.
 
         Log error and possibly throw exception in case of failure."""
         pass

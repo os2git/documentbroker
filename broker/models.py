@@ -2,10 +2,14 @@
 import os
 import urllib
 
+from django.conf import settings 
+
 from client.template_client import TemplateServer
 from client.documentbroker_settings import TEMPLATE_URL, TEMPLATE_BASE_URL
+from client.documentbroker_settings import BROKER_BASE_URL
 from configuration.models import PluginMapping
-from util.document_plugin import PluginManager
+from plugins import PluginManager
+from util.helpers import get_unique_token
 
 class DocumentBroker(object):
     """This class is not really a Django model. Rather, it implements a proxy
@@ -21,7 +25,7 @@ class DocumentBroker(object):
     def __init__(self, user_system_id):
         self._user_system_id = user_system_id
 
-    def generate_document(self, template_id, fields):
+    def generate_document(self, template_id, field_data):
         """Return URL to the generated document - throw exception if not
         possible."""
         # Check user system is allowed to use template.
@@ -39,7 +43,8 @@ class DocumentBroker(object):
                     )
         # Retrieve template from template server.
         real_url = TEMPLATE_BASE_URL + url
-        extension = os.path.splitext(url)[1]
+        file_base, extension = os.path.splitext(url)
+        file_base = file_base.split('/').pop()
         tmp_name = '/tmp/{0}{1}'.format(template_id, extension)
         (fn , headers) = urllib.urlretrieve(real_url, tmp_name)
 
@@ -52,10 +57,18 @@ class DocumentBroker(object):
                 )[0]
         plugin = PluginManager.get_plugin(plugin_mapping.plugin)
 
-        # TODO: Get fields
-        fields = { 'Hello' : 1 }
-        # TODO: Get output file name
-        output_file = '/tmp/dummy.odt'
-        raise RuntimeError("Not implemented: {0}".format(plugin_mapping))
-        return ""
+        # Get fields from template system
+        fields = ts.get_template_fields(template_id)
+        # Get output file name
+        unique_url = get_unique_token()
+        output_dir = os.path.join(settings.MEDIA_ROOT, 'files') 
+        output_file = '.'.join([unique_url, plugin_mapping.output_type])
+        output_path = os.path.join(output_dir, output_file)
+        # TODO: Implement indirect URL scheme instead of exposing file
+        # location.
+        # TODO: Validate that fields in call exist in template, etc.
+        output_url = settings.MEDIA_URL + 'files/' + output_file
+        #raise RuntimeError("Not implemented: {0}".format(output_url))
+        plugin.generate_document(tmp_name, output_path, field_data)
+        return BROKER_BASE_URL + output_url
 

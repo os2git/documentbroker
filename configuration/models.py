@@ -4,7 +4,8 @@ import hashlib
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from util.document_plugin import PluginManager
+from plugins import PluginManager
+from util.helpers import get_unique_token
 
 # Create your models here.
 
@@ -36,8 +37,7 @@ class ClientSystem(models.Model):
     def save(self, *args, **kwargs):
         # Before save
         if len(self.user_authentication) == 0:
-            seed = unicode(uuid.uuid4())
-            self.user_authentication = hashlib.sha1(seed).hexdigest()
+            self.user_authentication = get_unique_token()
         # Actual save
         super(ClientSystem, self).save(*args, **kwargs)
         # After save
@@ -52,6 +52,7 @@ class PluginMapping(models.Model):
     follow the document, not the extension."""
     plugins = PluginManager.list_plugins()
     extension = models.CharField(_('Extension'), max_length=16, unique=True)
+    output_type = models.CharField(_('Output Type'), max_length=16)
     plugin = models.CharField(
             _('Plugin'), 
             max_length=255, 

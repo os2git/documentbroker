@@ -35,8 +35,9 @@ def generate_odf(template_path, fields, output_path):
     meta.set_editing_cycles(1)
     meta.set_generator(MODULE_NAME)
 
-    # Now, set field values.
-    for field_name, (value, type) in fields.items():
+    # Now, set field values. Ignore non-text values for now.
+    type = 'text'
+    for field_name, value in fields.items():
         field = body.get_user_field_decl(field_name)
         value_string = 'office:{0}-value'.format(type)
 
@@ -44,6 +45,8 @@ def generate_odf(template_path, fields, output_path):
         field.set_attribute(value_string, value)
 
     # Now save document.
+    #raise RuntimeError("Not implemented: {0} - {1} - {2}".format(
+    #    template_path, output_path, ':'.join([value_string, value])))
     document.save(target=output_path, pretty=True)
     
     # TODO: This should be it! I imagine some book-keeping and exception
