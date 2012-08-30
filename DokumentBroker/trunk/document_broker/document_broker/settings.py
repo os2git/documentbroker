@@ -179,3 +179,7 @@ LOGGING = {
         },
     }
 }
+
+# The template server to use to get templates and template-related data.
+
+TEMPLATE_SERVER = "http://127.0.0.1:8080"
