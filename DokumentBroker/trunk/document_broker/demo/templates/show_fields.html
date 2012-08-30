@@ -1,6 +1,12 @@
 <h2>Udfyld disse felter:</h2>
 <form method="POST" action=".">
     {% csrf_token %}
-    {{ form }}
+    <p>
+    <table>
+        {{ form }}
+    </table>
+    </p>
+    <p>
     <input type=submit>
+    </p>
 </form>

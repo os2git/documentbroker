@@ -1,6 +1,33 @@
+<h2> Dokument-broker</h2>
+<table width="800"><tr><td>
+<p>
+Denne side indeholder en prototype af Magenta Aps' <i>Dokument-broker</i>, som
+kan samle al viden om generering af dokumenter på en kontorarbejdsplads på ét
+sted. Det har den virkning, af fagsystemerne ikke skal forholde sig til 
+forskellige versioner af diverse kontorprogrammer, men kan koncentrere sig om
+det forretningsmæssige og uddelegere ansvaret for formattering af dokumenter
+til brokeren.
+
+<br><br>
+Dokument-brokeren vil hermed også gøre det lettere at udskifte eller opgradere
+et kontorprogram, fordi opgraderingen kun behøver at foregå ét sted.
+
+<br><br>
+Herunder finder du en liste af skabeloner, som du kan forestille dig er til
+rådighed for et givet fagsystem. Hvis du vælger en skabelon og trykker på
+knappen, vil du blive ført igennem de få og enkle skridt, der ligger i at
+generere et dokument med dokument-brokeren.
+</p>
+</tr></td></table>
 
 <form method="POST" action=".">
+    <p>
     {% csrf_token %}
-    {{ form }}
+    <table>
+        {{ form }}
+    </table>
+    </p>
+    <p>
     <input type=submit>
+    </p>
 </form>
