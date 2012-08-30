@@ -64,8 +64,6 @@ class DocumentBroker(object):
         output_dir = os.path.join(settings.MEDIA_ROOT, 'files') 
         output_file = '.'.join([unique_url, plugin_mapping.output_type])
         output_path = os.path.join(output_dir, output_file)
-        # TODO: Implement indirect URL scheme instead of exposing file
-        # location.
         # TODO: Validate that fields in call exist in template, etc.
         output_url = settings.MEDIA_URL + 'files/' + output_file
         #raise RuntimeError("Not implemented: {0}".format(output_url))
