@@ -1,0 +1,14 @@
+GENERAL
+
+This folder contains a client library which can be used by the specialized
+user systems to implement their communication with the document broker.
+
+The client is written in Python and uses XML-RPC to communicate with the
+document broker as well as the template system. It may serve as model for
+similar client implementations in other programming languages, such as Java or
+C#.
+
+The main sections of the broker_client and template_client files contain simple
+test programs. These may be modified to suit the user.
+
+

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% if redirect %}
+<meta http-equiv="REFRESH" content="5;url=/document_broker/demo/">
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<h2>Genereret dokument:</h2>
+
+<table style="text-align: left" cellspacing="4">
+    <tr>
+        <th> Dokument</th>
+        <td>
+            <a href="{{ url }}">Klik her</a>
+        </td>
+    </tr>
+    <tr>
+        <th>SHA1-sum:</th> 
+        <td> {{sha1sum}}</td>
+    </tr>
+</table>
+
+<form method="POST" action=".">
+    <p>
+    {% csrf_token %}
+    <table style="text-align: left">
+        {{ form }}
+    </table>
+    </p>
+    <p>
+    <input type="hidden" name="result_url" value="{{ url }}">
+    <input type="hidden" name="sha1sum" value="{{ sha1sum }}">
+    <input type=submit>
+    </p>
+</form>
+
+{% if status %}
+<b><i>{{ status }}</i></b>
+{% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" xmlns:html="http://www.w3.org/1999/xhtml" font-family="Liberation Sans">
+<fo:layout-master-set>
+<fo:simple-page-master page-width="auto" page-height="auto" master-name="all-pages">
+<fo:region-body margin-left="2cm" margin-top="1cm" margin-right="4cm" margin-bottom="1cm"/>
+<fo:region-before precedence="true" display-align="before" extent="1cm" region-name="page-header"/>
+<fo:region-start extent="4cm" region-name="sidebar-left"/>
+<fo:region-end extent="4cm" region-name="sidebar-right"/>
+</fo:simple-page-master>
+</fo:layout-master-set>
+<fo:declarations>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+<dc:title>
+<rdf:Alt>
+<rdf:li xml:lang="en-US">Simpelt brev med sidehoved</rdf:li>
+</rdf:Alt>
+</dc:title>
+<dc:creator>
+<rdf:Seq>
+<rdf:li>Document Broker by Magenta Aps</rdf:li>
+</rdf:Seq>
+</dc:creator>
+<dc:description>
+<rdf:Alt>
+<rdf:li xml:lang="en-us">No description available  - to be implemented</rdf:li>
+</rdf:Alt>
+</dc:description>
+<dc:subject>
+<rdf:Bag>No description available  - to be implemented</rdf:Bag>
+</dc:subject>
+<dc:date>
+<rdf:Seq>
+<rdf:li>2012-08-24</rdf:li>
+</rdf:Seq>
+</dc:date>
+<dc:language>da-DK</dc:language>
+</rdf:Description>
+<rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
+<xmp:CreatorTool>Document Broker by Magenta Aps</xmp:CreatorTool>
+</rdf:Description>
+</rdf:RDF>
+</x:xmpmeta>
+</fo:declarations>
+<fo:bookmark-tree>
+<fo:bookmark internal-destination="foerste_afsnit">
+<fo:bookmark-title>First header</fo:bookmark-title>
+</fo:bookmark>
+<fo:bookmark internal-destination="modtager_afsender-blok">
+<fo:bookmark-title>Figur: Modtager- og afsender-felt</fo:bookmark-title>
+</fo:bookmark>
+</fo:bookmark-tree>
+<fo:page-sequence role="Part" master-reference="all-pages">
+<fo:title xml:lang="en-US">Simpelt brev med sidehoved</fo:title>
+<fo:static-content role="Sect" flow-name="sidebar-right">
+<fo:block role="Div" space-after.conditionality="retain" id="sidebar_right" background-color="rgb(235,235,235)" padding="0.1cm">
+<fo:block role="H2" font-family="Liberation Sans" font-size="12pt" font-weight="bold" padding-bottom="0.1cm" color="rgb(25,25,25)" text-align="center" id="kontaktinfo">Kontakt</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">
+<fo:inline role="Span" color="rgb(50,50,50)">Telefon: </fo:inline>
+<fo:inline role="Span" color="rgb(75,75,75)">#afs_tlf</fo:inline>
+</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">
+<fo:inline role="Span" color="rgb(50,50,50)">Adresse: </fo:inline>
+<fo:inline role="Span" color="rgb(75,75,75)">#afs_adr</fo:inline>
+</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">
+<fo:inline role="Span" color="rgb(50,50,50)">Website: </fo:inline>
+<fo:inline role="Span" color="rgb(75,75,75)">#afs_web</fo:inline>
+</fo:block>
+</fo:block>
+</fo:static-content>
+<fo:static-content role="Sect" flow-name="page-header" margin-top="0.2cm" margin-left="1cm" margin-right="0.2cm">
+<fo:block width="100%" space-before.conditionality="retain" role="Div" id="page_header" margin-top="0.2cm" margin-left="1cm" margin-right="0.2cm">
+<fo:table width="100%" table-layout="fixed" role="Table" writing-mode="lr-tb">
+<fo:table-body role="TBody">
+<fo:table-row role="TR" width="100%">
+<fo:table-cell role="TD" display-align="after">
+<fo:block role="Div" text-align="right" end-indent="0in">
+<fo:external-graphic src="url('http://www.magenta-aps.dk/grafik/toplogo_white.png')" fox:alt-text="Magentas logo" content-width="90px" role="Figure" id="Magentas_logo"/>
+</fo:block>
+</fo:table-cell>
+</fo:table-row>
+</fo:table-body>
+</fo:table>
+</fo:block>
+</fo:static-content>
+<fo:flow role="Sect" flow-name="xsl-region-body">
+<fo:block role="Div" id="page_contents">
+<fo:table width="100%" table-layout="fixed" role="Table" writing-mode="lr-tb" fox:alt-text="Modtager- og afsender-felt" margin-bottom="1cm">
+<fo:table-body role="TBody">
+<fo:table-row role="TR" id="modtager_afsender-blok" width="100%" margin-bottom="1cm">
+<fo:table-cell role="TD" display-align="after">
+<fo:block role="Div" text-align="left" end-indent="0in">
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">#mdt_navn</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">#mdt_adr</fo:block>
+</fo:block>
+</fo:table-cell>
+<fo:table-cell role="TD" display-align="after">
+<fo:block role="Div" text-align="right" end-indent="0in">
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">#afs_sted den #afs_dato</fo:block>
+</fo:block>
+</fo:table-cell>
+</fo:table-row>
+</fo:table-body>
+</fo:table>
+<fo:block role="H1" font-family="Liberation Sans" font-size="14pt" font-weight="bold" padding-bottom="0.25cm" id="foerste_afsnit">Vedr. #sagsnr</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">Dette er blot en simpel tekstblok. Hvis title og id havde været defineret ville denne også få tildelt et bogmærke, men det giver mere mening at angive bogmærket til overskriften.</fo:block>
+<fo:block role="P" font-family="Liberation Sans Narrow" font-size="10pt">Her begynder en ny tekstblok. Som det ses opdeles hver tekstblok.</fo:block>
+<fo:block role="Div" page-break-before="always"/>
+<fo:block role="P" font-family="Liberation Serif" font-size="16pt" color="rgb(255,0,0)" padding="2cm" text-align="center">Her er en stylet tekstblok på en ny side.</fo:block>
+</fo:block>
+</fo:flow>
+</fo:page-sequence>
+</fo:root>

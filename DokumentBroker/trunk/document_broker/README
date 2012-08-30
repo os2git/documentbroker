@@ -1,0 +1,27 @@
+This is the home of the Document Broker service. 
+
+This includes the document generator and the transport protocols to be used by
+the clients. It also includes the template system, which is supposed to be
+deployed as a separate web service.
+
+This program and the components it contains is free software developed by
+Magenta ApS for use by its customers. You are free to use, modify and
+distribute  it for whatever purpose you wish according to the conditions of 
+the GNU General Public License, version 3. See the COPYING file for the full
+text of this license.
+
+The client libraries found in the "client/" directory may be reused and
+modified under the modified BSD license, see the COPYING file in that
+directory.
+
+Third party libraries like Django are included under their own licenses as
+specified in their respective installation directories.
+
+All XSLT style sheets build on work by Antenna House, Inc.
+(http://www.antennahouse.com) and are licensed by them as described in the 
+files "research/COPYING.XSLT" and "plugins/xhtml_plugin/COPYING.XSLT". Magenta
+ApS does not claim any copyright over those files.
+
+All HTML templates included under "research/" are shared under a Creative
+Commons Attribution 3.0 License as described here:
+http://creativecommons.org/licenses/by/3.0/

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" xmlns:html="http://www.w3.org/1999/xhtml" role="Document" font-family="Free Serif">
+<fo:layout-master-set>
+<fo:simple-page-master page-width="auto" page-height="auto" master-name="all-pages">
+<fo:region-body margin-left="2cm" margin-top="2cm" margin-right="2cm" margin-bottom="1cm"/>
+<fo:region-before precedence="true" display-align="before" extent="2cm" region-name="page-header"/>
+<fo:region-after precedence="true" display-align="after" extent="2cm" region-name="page-footer"/>
+<fo:region-start extent="1cm" region-name="sidebar-left"/>
+<fo:region-end extent="1cm" region-name="sidebar-right"/>
+</fo:simple-page-master>
+</fo:layout-master-set>
+<fo:declarations>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+<dc:title>
+<rdf:Alt>
+<rdf:li xml:lang="en-US">SIMPLE SAMPLE XHTML TEMPLATE</rdf:li>
+</rdf:Alt>
+</dc:title>
+<dc:creator>
+<rdf:Seq>
+<rdf:li>Document Broker by Magenta Aps</rdf:li>
+</rdf:Seq>
+</dc:creator>
+<dc:description>
+<rdf:Alt>
+<rdf:li xml:lang="en-us">No description available  - to be implemented</rdf:li>
+</rdf:Alt>
+</dc:description>
+<dc:subject>
+<rdf:Bag>No description available  - to be implemented</rdf:Bag>
+</dc:subject>
+<dc:date>
+<rdf:Seq>
+<rdf:li>2012-08-17</rdf:li>
+</rdf:Seq>
+</dc:date>
+</rdf:Description>
+<rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
+<xmp:CreatorTool>Document Broker by Magenta Aps</xmp:CreatorTool>
+</rdf:Description>
+</rdf:RDF>
+</x:xmpmeta>
+</fo:declarations>
+<fo:page-sequence master-reference="all-pages" role="Part">
+<fo:title xml:lang="en-US">SIMPLE SAMPLE XHTML TEMPLATE</fo:title>
+<fo:static-content flow-name="page-header" role="Sect" margin-left="1cm" margin-right="1cm">
+<fo:block width="100%" space-before.conditionality="retain" id="page_header" margin-left="1cm" margin-right="1cm">
+<fo:block role="P" font-family="Free Serif" font-size="12pt" text-align="center">#page_header</fo:block>
+<fo:table-and-caption>
+<fo:table-caption>Logo</fo:table-caption>
+<fo:table-body>
+<fo:table-row width="100%">
+<fo:table-cell display-align="after">
+<fo:block text-align="right" end-indent="0in">
+<fo:external-graphic role="IMG" src="url('http://www.magenta-aps.dk/grafik/toplogo_white.png')" fox:alt-text="logo"/>
+</fo:block>
+</fo:table-cell>
+</fo:table-row>
+</fo:table-body>
+</fo:table-and-caption>
+</fo:block>
+</fo:static-content>
+<fo:static-content flow-name="page-footer">
+<fo:block text-align-last="justify" space-after.conditionality="retain" id="page_footer_with_page_number" margin-left="1cm" margin-right="1cm">#sidefod<fo:leader leader-pattern="space"/>Side <fo:page-number/>
+</fo:block>
+</fo:static-content>
+<fo:flow flow-name="xsl-region-body" role="Sect">
+<fo:block id="page_contents">
+<fo:table-and-caption>
+<fo:table-caption>modtager/afsender-blok</fo:table-caption>
+<fo:table-body>
+<fo:table-row width="100%" padding="1cm">
+<fo:table-cell display-align="after">
+<fo:block text-align="left" end-indent="0in">
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#modtager_navn</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#modtager_adresse</fo:block>
+</fo:block>
+</fo:table-cell>
+<fo:table-cell display-align="after">
+<fo:block text-align="right" end-indent="0in">
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#afsender_sted den #afsender_dato</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#afsender_navn</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#afsender_adresse</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#afsender_telefon</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">#modtager_website</fo:block>
+</fo:block>
+</fo:table-cell>
+</fo:table-row>
+</fo:table-body>
+</fo:table-and-caption>
+<fo:block role="H1" font-family="Free Serif" font-size="18pt" font-weight="bold">SIMPLE SAMPLE XHTML TEMPLATE</fo:block>
+<fo:block role="H2" font-family="Free Serif" font-size="14pt" font-weight="bold" id="circular-memo-sent-on-date-to-count-recipients">Circular memo sent on #date to #count recipients</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">Dear all,</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</fo:block>
+<fo:block role="P" font-family="Free Serif" font-size="12pt">best regards,</fo:block>
+<fo:block page-break-before="always"/>
+    En ny side
+    <fo:block role="P" font-family="Free Serif" font-size="12pt">Bare lige for at teste sideskift.</fo:block>
+</fo:block>
+</fo:flow>
+</fo:page-sequence>
+</fo:root>

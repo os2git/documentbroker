@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" xmlns:html="http://www.w3.org/1999/xhtml" writing-mode="lr-tb" hyphenate="false" text-align="start" font-family="Free Serif">
+<fo:layout-master-set>
+<fo:simple-page-master page-width="auto" page-height="auto" master-name="all-pages">
+<fo:region-body role="DIV" id="init" margin-left="0.25in" margin-top="1.25in" margin-right="0.25in" margin-bottom="0.75in"/>
+<fo:region-before precedence="true" display-align="before" extent="1in" region-name="page-header"/>
+<fo:region-after precedence="true" display-align="after" extent="1in" region-name="page-footer"/>
+<fo:region-start extent="0in" region-name="sidebar-left"/>
+<fo:region-end extent="0.5in" region-name="sidebar-right"/>
+</fo:simple-page-master>
+</fo:layout-master-set>
+<fo:declarations>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
+<dc:creator>
+<rdf:Seq>
+<rdf:li>Document Broker by Magenta Aps</rdf:li>
+</rdf:Seq>
+</dc:creator>
+<dc:date>
+<rdf:Seq>
+<rdf:li>2012-08-14</rdf:li>
+</rdf:Seq>
+</dc:date>
+</rdf:Description>
+<rdf:Description xmlns:xmp="http://ns.adobe.com/xap/1.0/" rdf:about="">
+<xmp:CreatorTool>Document Broker by Magenta Aps</xmp:CreatorTool>
+</rdf:Description>
+</rdf:RDF>
+</x:xmpmeta>
+</fo:declarations>
+<fo:page-sequence language="da-DK" master-reference="all-pages">
+<fo:title xml:lang="en-us">SIMPLE SAMPLE XHTML TEMPLATE</fo:title>
+<fo:static-content flow-name="page-header">
+<fo:block width="100%" space-before.conditionality="retain" role="DIV" id="page_header">
+    <fo:block role="P" text-align="center">#page_header</fo:block>
+    <fo:table>
+<fo:table-body>
+<fo:table-row role="DIV" width="100%">
+      <fo:table-cell>
+<fo:block text-align="right" end-indent="0in" role="DIV" margin="1in">
+	<fo:external-graphic src="url('file:///home/dennis/Documents/arbejde/document_broker/research/PDF_A_1a/test/logo.jpg')" fox:alt-text="logo" role="IMG"/>
+      </fo:block>
+</fo:table-cell>
+    </fo:table-row>
+</fo:table-body>
+</fo:table>
+  </fo:block>
+</fo:static-content>
+<fo:static-content flow-name="page-footer">
+<fo:block text-align-last="justify" space-after.conditionality="retain" role="DIV" id="page_footer_with_page_number" margin-left="0.25in" margin-right="0.25in" margin-bottom="0.25in">#sidefod<fo:leader leader-pattern="space"/>Side <fo:page-number/>
+</fo:block>
+</fo:static-content>
+<fo:flow flow-name="xsl-region-body">
+<fo:block role="DIV" id="page_contents">
+    <fo:table>
+<fo:table-body>
+<fo:table-row role="DIV" width="100%">
+      <fo:table-cell>
+<fo:block text-align="left" end-indent="0in" role="DIV">
+        
+	  <fo:block role="P">#modtager_navn</fo:block>
+	  <fo:block role="P">#modtager_adresse</fo:block>
+	
+      </fo:block>
+</fo:table-cell>
+      <fo:table-cell>
+<fo:block text-align="right" end-indent="0in" role="DIV">
+        
+	  <fo:block role="P">#afsender_sted den #afsender_dato</fo:block>
+	  <fo:block role="P">#afsender_navn</fo:block>
+	  <fo:block role="P">#afsender_adresse</fo:block>
+          
+	    <fo:block role="P">#afsender_telefon</fo:block>
+	    <fo:block role="P">#modtager_website</fo:block>
+	  
+	
+      </fo:block>
+</fo:table-cell>
+    </fo:table-row>
+</fo:table-body>
+</fo:table>
+    <fo:block role="H5" font-size="0.83em" font-weight="700" space-before="1.33em" space-after="1.33em" keep-with-next.within-column="always" keep-together.within-column="always">SIMPLE SAMPLE XHTML TEMPLATE</fo:block>
+    <fo:block role="H6" font-size="0.67em" font-weight="700" space-before="1.67em" space-after="1.67em" keep-with-next.within-column="always" keep-together.within-column="always" id="circular-memo-sent-on-date-to-count-recipients">Circular memo sent on #date to #count recipients</fo:block>
+    <fo:block role="P">Dear all,</fo:block>
+    <fo:block role="P">it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</fo:block>
+    <fo:block role="P">Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</fo:block>
+    <fo:block role="P">best regards,</fo:block>
+    <fo:block page-break-before="always"/>
+    <fo:inline font-weight="700" role="B">En ny side</fo:inline>
+    <fo:block role="P">Bare lige for at teste sideskift.</fo:block>
+  </fo:block>
+</fo:flow>
+</fo:page-sequence>
+</fo:root>
+

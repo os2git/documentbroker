@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da-DK">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIMPLE SAMPLE XHTML TEMPLATE</title>
+</head>
+<body>
+<!--
+    I denne div-blok defineres header, footer og bokse. Men det er kun ting, som skal vaere statisk indlejrede i dokumentet
+-->
+<div id="init" style="font-family: Liberation Sans; margin-left: 2cm; margin-top: 2cm; margin-right: 2cm; margin-bottom: 1cm;">
+    <div id="page_width">auto</div>
+    <div id="page_height">auto</div>
+    <!--<div id="sidebar_width">1cm</div>-->
+    <div id="header_height">2cm</div>
+    <div id="footer_height">2cm</div>
+    <div id="text_mode">start</div>
+    <!--<div id="text-mode">justify</div>-->
+    <div id="text_direction">lr-tb</div>
+    <!--<div id="text_direction">rl-tb</div>-->
+    <!--<div id="text_direction">tb-rl</div>-->
+    <div id="hyphenize">false</div>
+    <!--<div id="hyphenize">true</div>-->
+    <div id="def_p" style="font-family: Liberation Sans Narrow; font-size: 12pt;" />
+    <div id="def_h1" style="font-family: Liberation Sans; font-size: 18pt; font-weight: bold;" />
+    <div id="def_h2" style="font-family: Liberation Sans; font-size: 14pt; font-weight: bold;" />
+  <!--
+    <div id="def_h3" style="font-family: Free Serif; font-size: 24pt; font-weight: bold;" />
+    <div id="def_h4" style="font-family: Free Serif; font-size: 20pt; font-weight: bold;" />
+    <div id="def_h5" style="font-family: Free Serif; font-size: 16pt; font-weight: bold;" />
+    <div id="def_h6" style="font-family: Free Serif; font-size: 12pt; font-weight: bold;" />
+  -->
+<!--
+  <div id="sideboks_hoejre">
+    <span style="background-color: rgb(200,200,200);">Hoejrestillet boks</span>
+  </div>
+-->
+  <!-- Forsoeg paa implementering af sidehoved og sidefod -->
+  <div id="page_header" style="margin-left: 1cm; margin-right: 1cm;">
+    <p style="text-align: center;">#page_header</p>
+    <div class="alignment_block" style="width: 100%;" title="Logo">
+      <div class="block_right">
+        <img src="http://www.magenta-aps.dk/grafik/toplogo_white.png" alt="logo" id="Magentas_logo" title="logo" />
+      </div>
+    </div>
+  </div>
+  <div id="page_footer_with_page_number" style="margin-left: 1cm; margin-right: 1cm;">#sidefod</div>
+  <div id="page_contents">
+    <div class="alignment_block" style="width: 100%; margin-bottom: 1cm;" title="modtager/afsender-blok">
+      <div class="block_left">
+        <p>#modtager_navn</p>
+        <p>#modtager_adresse</p>
+      </div>
+      <div class="block_right">
+        <p>#afsender_sted den #afsender_dato</p>
+        <p>#afsender_navn</p>
+        <p>#afsender_adresse</p>
+        <p>#afsender_telefon</p>
+        <p>#modtager_website</p>
+      </div>
+    </div>
+    <h1 id="first_header" title="First header">SIMPLE SAMPLE XHTML TEMPLATE</h1>
+    <h2 id="circular-memo-sent-on-date-to-count-recipients" title="Second header">Circular memo sent on #date to #count recipients</h2>
+    <p id="first_paragraph" title="First paragraph">Dear all,</p>
+    <p id="second_paragraph" title="Second paragraph">it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</p>
+    <!--<div class="center_figure_in_parent">-->
+    <div class="figure_right_in_parent">
+    <!--<div class="figure_left_in_parent">-->
+      <!-- We define the table reading order with classes as the dir attribute in xhtml only supports the value 'rtl' and 'ltr' -->
+      <!--<table id="test_table" class="table_order_left_to_right-top_down" width="40%" style="border: 1px solid rgb(50,50,50);">-->
+      <!--<table id="test_table" class="table_order_right_to_left-top_down" width="40%" style="border: 1px solid rgb(50,50,50);">-->
+      <table id="test_table" class="table_order_top_down-right_to_left" width="40%" style="border: 1px solid rgb(50,50,50);">
+        <tr>
+          <td>Dette</td><td>er</td>
+        </tr>
+        <tr>
+          <td>en</td><td>test</td>
+        </tr>
+      </table>
+    </div>
+    <p id="third_paragraph" title="Third paragraph">Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</p>
+    <p id="fourth_paragraph" title="Fourth paragraph">best regards,</p>
+    <div class="page_break" />
+    En ny side
+    <p id="fifth_paragraph" title="Fifth paragraph">Bare lige for at teste sideskift.</p>
+  </div>
+</div>
+</body>
+</html>
