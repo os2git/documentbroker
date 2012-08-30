@@ -14,6 +14,17 @@ framework.
 
 """
 import os
+import sys
+
+install_dir = os.path.abspath(
+    os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 
+        '..')
+)
+
+sys.path.append(install_dir)
+sys.stderr.write("LOOOKY HEERE: " + install_dir)
+sys.stderr.flush()
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "document_broker.settings")
 
