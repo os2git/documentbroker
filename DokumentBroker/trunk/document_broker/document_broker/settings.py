@@ -148,6 +148,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 XMLRPC_METHODS = (
     # List methods to be exposed in the form (<method path>, <xml-rpc name>,)
     ('broker.views.generate', 'generate'),
+    ('broker.views.get_client_systems', 'get_client_systems'),
 
 )
 # A sample logging configuration. The only tangible logging

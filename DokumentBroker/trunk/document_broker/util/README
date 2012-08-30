@@ -1,0 +1,7 @@
+This library contains utility functions with are not Django-aware, i.e. for
+general use. This library belongs to the layer BELOW Django, so NO Django stuff
+may be imported here. 
+
+Some of this may have to be shared between the document broker and the template
+system, and in that case, it will be moved to the  /lib/ folder in the
+virtualenv.
