@@ -36,13 +36,14 @@ def generate_odf(template_path, fields, output_path):
     meta.set_generator(MODULE_NAME)
 
     # Now, set field values. Ignore non-text values for now.
-    type = 'text'
+    type = 'string'
     for field_name, value in fields.items():
         field = body.get_user_field_decl(field_name)
         value_string = 'office:{0}-value'.format(type)
 
         field.set_attribute('office:value-type', type)
         field.set_attribute(value_string, value)
+        field.set_attribute('office:value', value)
 
     # Now save document.
     #raise RuntimeError("Not implemented: {0} - {1} - {2}".format(
