@@ -22,6 +22,7 @@ install_dir = os.path.abspath(
     os.path.join( os.path.dirname(__file__), '..')
 )
 sys.path.append(install_dir)
+sys.path.append('/home/agger/document_broker/lib/python2.7/site-packages')
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
