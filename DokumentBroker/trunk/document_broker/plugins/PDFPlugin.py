@@ -1,9 +1,10 @@
 """This file implements the ODF generator plugin for the Document Broker."""
 
-from util.document_plugin import DocumentPlugin
+from document_plugin import DocumentPlugin
 
 
 class PDFPlugin(DocumentPlugin):
+    """PDF Document Plugin"""
 
     def __init__(self):
         """ODF related initialization, if any."""

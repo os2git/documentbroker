@@ -56,12 +56,13 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 # TODO: Fix this during installation.
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(INSTALL_DIR, 'site-media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+# TODO: Maybe we'll end up specifying the full URI.
+MEDIA_URL = '/site/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -147,7 +148,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 XMLRPC_METHODS = (
     # List methods to be exposed in the form (<method path>, <xml-rpc name>,)
-    ('broker.views.generate', 'generate'),
+    ('broker.views.generate_document', 'generate_document'),
     ('broker.views.get_client_systems', 'get_client_systems'),
     ('broker.views.acknowledge', 'acknowledge'),
     ('broker.views.authorize', 'authorize'),
