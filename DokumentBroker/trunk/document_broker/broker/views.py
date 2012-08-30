@@ -30,7 +30,7 @@ def generate_document(user_authentication, template_id, fields):
     
     clid = get_client_id(user_authentication)
     broker = DocumentBroker(clid)
-    broker.generate_document(template_id, fields)
+    return broker.generate_document(template_id, fields)
 
 @authorized
 def acknowledge(user_authentication, document):

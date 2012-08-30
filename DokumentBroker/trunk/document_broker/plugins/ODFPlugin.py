@@ -12,15 +12,16 @@ class ODFPlugin(DocumentPlugin):
         """ODF related initialization, if any."""
         pass
 
-    def generate(self, template_file, output_path, fields):
+    def generate_document(self, template_file, output_path, fields):
         """Generate ODF document from template.
-
+        
         Log error and possibly throw exception in case of failure."""
         try:
             generate_odf(template_file, fields, output_path)
         except Exception as e:
             # TODO: Proper error logging here, many thanks!
             sys.stderr.write("Error found: " + str(e))
+            raise
 
 
 

@@ -8,7 +8,7 @@ class DocumentPlugin(object):
        actual plugins.
     """
 
-    def generate(self, template_file, output_path, fields):
+    def generate_document(self, template_file, output_path, fields):
         """Generate a document using the file *template_file*, place the
         resulting document in the path given by *document_path*. 
         

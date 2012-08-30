@@ -16,7 +16,7 @@ class ClientSystemAdmin(admin.ModelAdmin):
     list_display = ['name', 'client']
 
 class PluginMappingAdmin(admin.ModelAdmin):
-    fields = ['extension', 'plugin']
+    fields = ['extension', 'output_type', 'plugin']
     list_display = ['extension', 'plugin']
 
 admin.site.register(Client, ClientAdmin)
