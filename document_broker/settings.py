@@ -1,10 +1,17 @@
 # Django settings for document_broker project.
 
+import os
+from util.helpers import get_install_dir
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+INSTALL_DIR = get_install_dir()
+CUSTOM_TEMPLATES = os.path.join(INSTALL_DIR, 'django_templates')
+
 ADMINS = (
-    # ('Carsten Agger', 'carstena@magenta-aps.dk'),
+    ('Carsten Agger', 'carstena@magenta-aps.dk'),
 )
 
 MANAGERS = ADMINS
@@ -107,9 +114,8 @@ ROOT_URLCONF = 'document_broker.urls'
 WSGI_APPLICATION = 'document_broker.wsgi.application'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    CUSTOM_TEMPLATES
 )
 
 INSTALLED_APPS = (
@@ -120,9 +126,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'configuration'
 )
 
 # A sample logging configuration. The only tangible logging
