@@ -151,7 +151,7 @@ XMLRPC_METHODS = (
     ('broker.views.generate_document', 'generate_document'),
     ('broker.views.get_client_systems', 'get_client_systems'),
     ('broker.views.get_authorization', 'get_authorization'),
-    ('broker.views.acknowledge', 'acknowledge'),
+    ('broker.views.acknowledge_document', 'acknowledge_document'),
 
 )
 # A sample logging configuration. The only tangible logging
