@@ -1,8 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h2>Udfyld disse felter:</h2>
 <form method="POST" action=".">
     {% csrf_token %}
     <p>
-    <table>
+    <table style="text-align:left;">
         {{ form }}
     </table>
     </p>
@@ -10,3 +14,5 @@
     <input type=submit>
     </p>
 </form>
+
+{% endblock %}

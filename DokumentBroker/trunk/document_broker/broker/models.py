@@ -1,6 +1,7 @@
 
 import os
 import urllib
+import hashlib
 
 from django.conf import settings 
 
@@ -68,8 +69,13 @@ class DocumentBroker(object):
         output_url = settings.MEDIA_URL + 'files/' + output_file
         #raise RuntimeError("Not implemented: {0}".format(output_url))
         plugin.generate_document(tmp_name, output_path, field_data)
+        # Calculate SHA1 hash of output file
+        sha1 = hashlib.sha1()
+        with open(output_path, 'rb') as f:
+            sha1.update(f.read())
+        hash = sha1.hexdigest()
 
-        return BROKER_BASE_URL + output_url
+        return (BROKER_BASE_URL + output_url, hash)
 
     def acknowledge_document(self, document_url):
         file_name = document_url.split('/').pop()

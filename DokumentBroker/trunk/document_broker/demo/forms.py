@@ -16,7 +16,7 @@ class FieldsForm(forms.Form):
         for i, field in enumerate(dynamic_fields):
             self.fields[
                     'document_field_{0}'.format(i)
-                    ] = forms.CharField(label=field)
+                    ] = forms.CharField(label=field, required=False)
 
             
     def get_field_data(self):
@@ -25,6 +25,12 @@ class FieldsForm(forms.Form):
                 yield(self.fields[name].label, value)
 
 
+class ResultForm(forms.Form):
+    command = forms.ChoiceField(
+            choices=[('SHA1', 'Check SHA1-sum'), ('ACK', 'Kvitter og slet')],
+            required=False,
+            label='Kommando'
+            )
 
 
 
