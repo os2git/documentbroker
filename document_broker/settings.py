@@ -118,7 +118,7 @@ TEMPLATE_DIRS = (
     CUSTOM_TEMPLATES
 )
 
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -132,6 +132,24 @@ INSTALLED_APPS = (
     'configuration'
 )
 
+THIRD_PARTY_APPS = (
+    'django_xmlrpc',
+)
+
+LOCAL_APPS = (
+    'configuration',
+    'broker',
+)
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# XML-RPC setup
+
+XMLRPC_METHODS = (
+    # List methods to be exposed in the form (<method path>, <xml-rpc name>,)
+    ('broker.views.generate', 'generate'),
+
+)
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
