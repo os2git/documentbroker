@@ -10,7 +10,7 @@ import sys
 from configuration.models import ClientSystem
 
 
-def authorize(client_id, password):
+def get_authorization(client_id, password):
     """Authorize client and return control block to be used in subsequent API
     calls."""
     if is_valid_login(client_id, password):
