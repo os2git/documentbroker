@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- $Id: fop.xconf 447325 2006-09-18 08:55:33Z jeremias $ -->
+
+<!--
+
+This is an example configuration file for FOP.
+This file contains the same settings as the default values
+and will have no effect if used unchanged.
+
+Relative config url's will be resolved relative to
+the location of this file.
+
+-->
+
+<!-- NOTE: This is the version of the configuration -->
+<fop version="1.0">
+ 
+  <accessibility>true</accessibility>
+
+  <!-- Base URL for resolving relative URLs -->
+  <base>.</base>
+  
+  <!-- Source resolution in dpi (dots/pixels per inch) for determining the size of pixels in SVG and bitmap images, default: 72dpi -->
+  <source-resolution>72</source-resolution>
+  <!-- Target resolution in dpi (dots/pixels per inch) for specifying the target resolution for generated bitmaps, default: 72dpi -->
+  <target-resolution>72</target-resolution>
+  
+  <!-- Default page-height and page-width, in case
+       value is specified as auto -->
+  <default-page-settings height="11in" width="8.26in"/>
+  
+  <!-- Information for specific renderers -->
+  <!-- Uses renderer mime type for renderers -->
+  <renderers>
+    <renderer mime="application/pdf">
+      <!--<filterList>-->
+        <!-- provides compression using zlib flate (default is on) -->
+        <value>flate</value>
+  
+        <!-- encodes binary data into printable ascii characters (default off)
+             This provides about a 4:5 expansion of data size -->
+        <!-- <value>ascii-85</value> -->
+  
+        <!-- encodes binary data with hex representation (default off)
+             This filter is not recommended as it doubles the data size -->
+        <!-- <value>ascii-hex</value> -->
+	  <!--</filterList>-->
+
+      <fonts>
+        <!-- embedded fonts -->
+	
+	<!-- URW Gothic L -->
+	<!--
+	
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/a010013l.pfb">
+		<font-triplet name="URW Gothic L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/a010015l.pfb">
+		<font-triplet name="URW Gothic L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/a010033l.pfb">
+		<font-triplet name="URW Gothic L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/a010035l.pfb">
+		<font-triplet name="URW Gothic L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- URW Bookman L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/b018012l.pfb">
+		<font-triplet name="URW Bookman L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/b018015l.pfb">
+		<font-triplet name="URW Bookman L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/b018032l.pfb">
+		<font-triplet name="URW Bookman L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/b018035l.pfb">
+		<font-triplet name="URW Bookman L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Century Schoolbook L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/c059013l.pfb">
+		<font-triplet name="Century Schoolbook L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/c059016l.pfb">
+		<font-triplet name="Century Schoolbook L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/c059033l.pfb">
+		<font-triplet name="Century Schoolbook L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/c059036l.pfb">
+		<font-triplet name="Century Schoolbook L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Nimbus Sans L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019003l.pfb">
+		<font-triplet name="Nimbus Sans L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019004l.pfb">
+		<font-triplet name="Nimbus Sans L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019023l.pfb">
+		<font-triplet name="Nimbus Sans L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019024l.pfb">
+		<font-triplet name="Nimbus Sans L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Nimbus Sans L Condensed -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019043l.pfb">
+		<font-triplet name="Nimbus Sans L Condensed" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019044l.pfb">
+		<font-triplet name="Nimbus Sans L Condensed" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019063l.pfb">
+		<font-triplet name="Nimbus Sans L Condensed" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n019064l.pfb">
+		<font-triplet name="Nimbus Sans L Condensed" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Nimbus Roman No9 L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n021003l.pfb">
+		<font-triplet name="Nimbus Roman No9 L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n021004l.pfb">
+		<font-triplet name="Nimbus Roman No9 L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n021023l.pfb">
+		<font-triplet name="Nimbus Roman No9 L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n021024l.pfb">
+		<font-triplet name="Nimbus Roman No9 L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Nimbus Mono L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n022003l.pfb">
+		<font-triplet name="Nimbus Mono L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n022004l.pfb">
+		<font-triplet name="Nimbus Mono L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n022023l.pfb">
+		<font-triplet name="Nimbus Mono L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/n022024l.pfb">
+		<font-triplet name="Nimbus Mono L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- URW Palladio L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/p052003l.pfb">
+		<font-triplet name="URW Palladio L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/p052004l.pfb">
+		<font-triplet name="URW Palladio L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/p052023l.pfb">
+		<font-triplet name="URW Palladio L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/p052024l.pfb">
+		<font-triplet name="URW Palladio L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Standard Symbols L -->
+	
+	<!--
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/s050000l.pfb">
+		<font-triplet name="Standard Symbols L" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/s050000l.pfb">
+		<font-triplet name="Standard Symbols L" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/s050000l.pfb">
+		<font-triplet name="Standard Symbols L" style="italic" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/fonts/s050000l.pfb">
+		<font-triplet name="Standard Symbols L" style="italic" weight="bold"/>
+        </font>
+	-->
+	
+	<!-- Free Serif -->
+
+	<!--
+
+        <font metrics-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerif.xml" kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerif.ttf">
+		<font-triplet name="Free Serif" style="normal" weight="normal"/>
+        </font>
+        <font metrics-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifBoldItalic.xml" kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifBoldItalic.ttf">
+		<font-triplet name="Free Serif" style="italic" weight="bold"/>
+        </font>
+        <font metrics-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifBold.xml" kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifBold.ttf">
+		<font-triplet name="Free Serif" style="normal" weight="bold"/>
+        </font>
+        <font metrics-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifItalic.xml" kerning="yes" embed-url="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/FreeSerifItalic.ttf">
+		<font-triplet name="Free Serif" style="italic" weight="normal"/>
+        </font>
+
+	-->
+	
+	<!--
+	    The following font are embedded directly from the OS's /usr/share/fonts/truetype/ directory.
+	    We have to make sure that a user has these font installed - they come with Debian and its derivatives (Ubuntu, Mint etc.).
+	  -->
+	
+	<!-- Liberation Mono -->
+	    
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf">
+		<font-triplet name="Liberation Mono" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf">
+		<font-triplet name="Liberation Mono" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationMono-BoldItalic.ttf">
+		<font-triplet name="Liberation Mono" style="italic" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationMono-Italic.ttf">
+		<font-triplet name="Liberation Mono" style="italic" weight="normal"/>
+        </font>
+	
+	<!-- Liberation Sans -->
+	    
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf">
+		<font-triplet name="Liberation Sans" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf">
+		<font-triplet name="Liberation Sans" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSans-BoldItalic.ttf">
+		<font-triplet name="Liberation Sans" style="italic" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSans-Italic.ttf">
+		<font-triplet name="Liberation Sans" style="italic" weight="normal"/>
+        </font>
+	
+	<!-- Liberation Sans Narrow -->
+	    
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSansNarrow-Regular.ttf">
+		<font-triplet name="Liberation Sans Narrow" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSansNarrow-Bold.ttf">
+		<font-triplet name="Liberation Sans Narrow" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSansNarrow-BoldItalic.ttf">
+		<font-triplet name="Liberation Sans Narrow" style="italic" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSansNarrow-Italic.ttf">
+		<font-triplet name="Liberation Sans Narrow" style="italic" weight="normal"/>
+        </font>
+	
+	<!-- Liberation Serif -->
+	    
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf">
+		<font-triplet name="Liberation Serif" style="normal" weight="normal"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf">
+		<font-triplet name="Liberation Serif" style="normal" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSerif-BoldItalic.ttf">
+		<font-triplet name="Liberation Serif" style="italic" weight="bold"/>
+        </font>
+	<font kerning="yes" embed-url="file:///usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf">
+		<font-triplet name="Liberation Serif" style="italic" weight="normal"/>
+        </font>
+	  
+        <!--
+        This information must exactly match the font specified
+        in the fo file. Otherwise it will use a default font.
+
+        For example,
+        <fo:inline font-family="Arial" font-weight="bold" font-style="normal">
+            Arial-normal-normal font
+        </fo:inline>
+        for the font triplet specified by:
+        <font-triplet name="Arial" style="normal" weight="bold"/>
+
+        If you do not want to embed the font in the pdf document
+        then do not include the "embed-url" attribute.
+        The font will be needed where the document is viewed
+        for it to be displayed properly.
+
+        possible styles: normal | italic | oblique | backslant
+        possible weights: normal | bold | 100 | 200 | 300 | 400
+                          | 500 | 600 | 700 | 800 | 900
+        (normal = 400, bold = 700)
+        -->
+
+        <!--
+        <font kerning="yes" embed-url="arial.xml" kerning="yes" embed-url="arial.ttf">
+          <font-triplet name="Arial" style="normal" weight="normal"/>
+          <font-triplet name="ArialMT" style="normal" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="arialb.xml" kerning="yes" embed-url="arialb.ttf">
+          <font-triplet name="Arial" style="normal" weight="bold"/>
+          <font-triplet name="ArialMT" style="normal" weight="bold"/>
+        </font>
+        -->
+      </fonts>
+
+      <!-- This option lets you specify additional options on an XML handler -->
+      <!--xml-handler namespace="http://www.w3.org/2000/svg">
+        <stroke-text>false</stroke-text>
+      </xml-handler-->
+
+    </renderer>
+
+    <renderer mime="application/postscript">
+      <!-- This option forces the PS renderer to rotate landscape pages -->
+      <!--auto-rotate-landscape>true</auto-rotate-landscape-->
+      
+      <!-- This option lets you specify additional options on an XML handler -->
+      <!--xml-handler namespace="http://www.w3.org/2000/svg">
+        <stroke-text>false</stroke-text>
+      </xml-handler-->
+    </renderer>
+
+    <renderer mime="application/vnd.hp-PCL">
+    </renderer>
+
+    <!-- MIF does not have a renderer
+    <renderer mime="application/vnd.mif">
+    </renderer>
+    -->
+
+    <renderer mime="image/svg+xml">
+      <format type="paginated"/>
+      <link value="true"/>
+      <strokeText value="false"/>
+    </renderer>
+
+    <renderer mime="application/awt">
+    </renderer>
+
+    <renderer mime="image/png">
+      <!--transparent-page-background>true</transparent-page-background-->
+    </renderer>
+
+    <renderer mime="image/tiff">
+      <!--transparent-page-background>true</transparent-page-background-->
+      <!--compression>CCITT T.6</compression-->
+    </renderer>
+
+    <renderer mime="text/xml">
+    </renderer>
+
+    <!-- RTF does not have a renderer
+    <renderer mime="text/rtf">
+    </renderer>
+    -->
+
+    <renderer mime="text/plain">
+      <pageSize columns="80"/>
+    </renderer>
+
+  </renderers>
+
+</fop>
+

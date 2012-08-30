@@ -1,0 +1,86 @@
+In the following, we assume that you wish to set up the document broker and the
+template system as two distinct services on the same server. It is also
+possible and in some configurations recommended to install them on different
+servers.
+
+REQUIREMENTS
+============
+
+In order to proceed, the following Debian packages or their equivalents in
+other operating systems MUST be installed on your system:
+
+    postgresql
+    python-virtualenv
+    postgresql-server-dev-all
+    python-dev
+    apache2
+    libapache2-mod-wsgi
+
+If using the built-in Photologue image storage in the template server, these
+packages are also necessary:
+
+    libjpeg8
+    libjpeg8-dev
+
+Please note that after installation you MUST ensure that the Python Imaging
+Library is compiled with JPEG support. See this forum article for details:
+
+http://ubuntuforums.org/showpost.php?p=10804763&postcount=2
+
+
+INSTRUCTIONS
+============
+
+After unpacking or cloning from a git repository, cd into 
+this directory and execute the command
+
+./create_virtualenv
+
+This will create the virtual Python environment and install Django and all
+necessary Python packages. 
+
+Next, to set up the Apache server, soft link the sample configuration file into
+the Apache sites dir:
+
+cd /etc/apache2/sites-available
+sudo ln -s <path-to-installation>/document_broker/etc/document_broker.apache.conf ./document_broker
+sudo ln -s
+<path-to-installation>/document_templates/etc/document_templates.apache.conf ./document_templates
+
+NOTE: The Apache configuration files currently contain hard coded paths etc.
+which may not correspond to the realities of your site. 
+
+Once you have ensured the paths are correct, you may execute 
+
+sudo a2ensite document_broker
+sudo a2ensite document_templates
+
+to enable the sites and
+
+sudo /etc/init.d/apache2 restart 
+
+to enable the service.
+
+
+DATABASE INSTRUCTIONS
+=====================
+
+(For document_broker - modify and repeat for the template system.)
+
+Set up the database server of your choice and fix the DB settings in
+<path-to-installation>/document_broker/document_broker accordingly.
+
+To create a PostgreSQL database (recommended), do:
+
+    ~/>sudo su - postgres
+
+    postgres=# createdb document_broker
+    postgres=# createuser document_broker
+    postgres=# psql -c "grant all on database document_broker to document_broker" 
+
+Navigate to <path-to-installation>/document_broker and execute the command
+
+python manage.py syncdb
+
+You can now start setting up the metadata through the admin system.
+

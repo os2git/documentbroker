@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da-DK">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ÆØÅ XHTML TEMPLATE</title>
+</head>
+<body>
+<!--
+    I denne div-blok defineres header, footer og bokse. Men det er kun ting, som skal vaere statisk indlejrede i dokumentet
+-->
+<div id="init" style="font-family: Liberation Sans; margin-left: 2cm; margin-top: 2cm; margin-right: 2cm; margin-bottom: 1cm;">
+    <div id="page_width">auto</div>
+    <div id="page_height">auto</div>
+    <div id="sidebar_width">1cm</div>
+    <div id="header_height">2cm</div>
+    <div id="footer_height">2cm</div>
+    <div id="def_p" style="font-family: Liberation Sans Narrow; font-size: 12pt;" />
+    <div id="def_h1" style="font-family: Liberation Sans; font-size: 18pt; font-weight: bold;" />
+    <div id="def_h2" style="font-family: Liberation Sans; font-size: 14pt; font-weight: bold;" />
+  <!--
+    <div id="def_h3" style="font-family: Free Serif; font-size: 24pt; font-weight: bold;" />
+    <div id="def_h4" style="font-family: Free Serif; font-size: 20pt; font-weight: bold;" />
+    <div id="def_h5" style="font-family: Free Serif; font-size: 16pt; font-weight: bold;" />
+    <div id="def_h6" style="font-family: Free Serif; font-size: 12pt; font-weight: bold;" />
+  -->
+<!--
+  <div id="sideboks_hoejre">
+    <span style="background-color: rgb(200,200,200);">Hoejrestillet boks</span>
+  </div>
+-->
+  <!-- Forsoeg paa implementering af sidehoved og sidefod -->
+  <div id="page_header" style="margin-left: 1cm; margin-right: 1cm;">
+    <p style="text-align: center;">#page_header</p>
+    <div class="alignment_block" style="width: 100%;" title="Logo">
+      <div class="block_right">
+	<img src="http://www.magenta-aps.dk/grafik/toplogo_white.png" legend="Logo" alt="logo" />
+      </div>
+    </div>
+  </div>
+  <div id="page_footer_with_page_number" style="margin-left: 1cm; margin-right: 1cm;">#sidefod</div>
+  <div id="page_contents">
+    <div class="alignment_block" style="width: 100%; padding: 1cm;" title="modtager/afsender-blok">
+      <div class="block_left">
+	  <p>#modtager_navn</p>
+	  <p>#modtager_adresse</p>
+      </div>
+      <div class="block_right">
+	<p>#afsender_sted den #afsender_dato</p>
+	<p>#afsender_navn</p>
+	<p>#afsender_adresse</p>
+        <div style="">
+	  <p>#afsender_telefon</p>
+	  <p>#modtager_website</p>
+	</div>
+      </div>
+    </div>
+    <h1>SIMPLE SAMPLE XHTML TEMPLATE</h1>
+    <h2 id="circular-memo-sent-on-date-to-count-recipients">Circular memo sent on #date to #count recipients</h2>
+    <p>Kære alle,</p>
+    <p> Vær høfligst orienteret om nedenstående: </p>
+    <p>it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</p>
+    <p>Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</p>
+    <p>best regards,</p>
+    <div class="page_break" />
+    En ny side
+    <p>Bare lige for at teste sideskift.</p>
+  </div>
+</div>
+</body>
+</html>

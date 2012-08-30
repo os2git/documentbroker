@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+    Dette dokument demonstrerer hvordan man sætter en simpel brevstruktur op.
+    Brevet vil have et sidehoved og lidt tekst samt et billed.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da-DK">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--
+        Standard HTML title-specifikation.
+        Her defineres dokumentets titel.
+    -->
+    <title>Simpelt brev med billede</title>
+  </head>
+  <body>
+    <!--
+        Her starter den egentlige opsætning af dokumentet.
+        Det er vigtigt at definere marginer og font-family i style-tagget.
+        
+        Læg mærke til at der anvendes amerikansk/engelsk decmaltegn. Altså punktum
+        i stedet for komma.
+    -->
+    <div id="init" style="font-family: Liberation Sans; margin-left: 1.5cm; margin-top: 2cm; margin-right: 1.5cm; margin-bottom: 1cm;">
+      <!--
+          De følgende div-tags angiver variable, som anvendes i dokumentstrukturen.
+      -->
+      <div id="page_width">auto</div>     <!--
+                                              Sidens bredde defineret i standard CSS-enheder (in, cm, px etc.).
+                                              Hvis denne sættes til auto bliver bredden svarende til en standard
+                                              A4-side (8,26 in).
+                                          -->
+      <div id="page_height">auto</div>    <!-- Det samme som ovenfor. Auto giver en højde på 11 in -->
+      <div id="header_height">2cm</div>   <!--
+                                              Hvis dokumentet indeholder et sidehoved skal denne parameter sættes.
+                                              Der kan anvendes standard CSS-enheder (cm, in, px etc.).
+                                              Man bør prøve sig lidt frem, for at opnå en optimal højde.
+                                              NB: Højden på sidehovedet skal passe sammen med topmagen i sidedefinitionen,
+                                              ellers kommer de til at overlappe hinanden.
+                                          -->
+      <div id="text_mode">start</div>     <!--
+                                              Hvordan teksten skal fremstå på siden. Denne værdi kan sættes til
+                                              enten start eller justify. Start betyder at teksten aligner til siden
+                                              af dokumentet, men justify betyder at teksten aligner til både højre
+                                              og venstre side af dokumentet (som i en avis) med større mellemrum
+                                              imellem ordene til følge.
+                                          -->
+      <div id="text_direction">lr-tb</div><!--
+                                              Teksretningen i dokumentet. Normaltvis vil denne være lr-tb, so betyder
+                                              left-to-right top-to-bottom. Dette er standard for vestlige sprog.
+                                              Mulige værdier er: lr-tb, rl-tb og tb-lr.
+                                          -->
+      <div id="hyphenize">true</div>      <!--
+                                              Skal ord ombrydes? Mulige værdier: true og false.
+                                          -->
+
+      <!--
+          Herunder defineres de anvendte tekst-tags.
+          Definitionerne vil bliver anvendt i hele dokumentet, hvor disse tags
+          anvendes.
+          
+          NB: anvendte tags SKAL defineres her.
+      
+          Det er naturligvis muligt at style tekster i dokumentet, men der skal
+          være en fallback-definition.
+      -->
+      <div id="def_p" style="font-family: Liberation Sans Narrow; font-size: 12pt;" />
+      <div id="def_h1" style="font-family: Liberation Sans; font-size: 24pt; font-weight: bold;" />
+      <div id="def_h2" style="font-family: Liberation Sans; font-size: 18pt; font-weight: bold;" />
+      <!--
+          I div-blokken herunder definerer vi et sidehoved for dokumentet.
+          Læg mærke til at marginer for sidehovedet defineres særskilt. Disse er
+          er uafhængige af dokumentets opsætning.
+      -->
+      <div id="page_header" style="margin-top: 0.2cm; margin-left: 0.2cm; margin-right: 0.2cm;">
+        <!--
+            Her vil vi gerne have en blok til at være højrestillet og derfor anvender vi
+            klassen alignment_block og inde i den klassen block_right. Deri angiver vi
+            indholdet.
+        -->
+        <div class="alignment_block" style="width: 100%;">
+          <div class="block_right">
+            <span style="font-weight: bold;">Telefon: </span>12345678
+            <p/>
+            <span style="font-weight: bold;">E-mail: </span>noget@noget.dk
+          </div>
+        </div>
+      </div>
+      <!--
+          Her definerer vi vores brødtekst.
+      -->
+      <div id="page_contents">
+        <!--
+            Vi anvender de tekst-tags vi definerede ovenfor.
+            Læg mærke til at der i de to overskrifter er defineret en title- og id-attribut.
+            Disse anvendes til at fremstille bogmærker til overskrifterne. Bogmærker er vigtige
+            for at dokumentetet kan erklæres conformant PDF/A 1a.
+        -->
+        <h1 id="foerste_afsnit" title="First header">Et simpelt brev med billede</h1>
+        <h2 id="underafsnit" title="Second header">Denne samt overskriften over får tildelt bogmærker</h2>
+        <p>Dette er blot en simpel tekstblok. Hvis title og id havde været defineret ville denne også få tildelt et bogmærke, men det giver mere mening at angive bogmærket til overskriften.</p>
+        <p>Her begynder en ny tekstblok. Som det ses opdeles hver tekstblok.</p>
+        <!--
+            Her indsætter vi et billede og centrerer det på siden. Læg mærke til
+            at standard CSS ikke kan anvendes ved objekter, så vi må benytte
+            klassen center_figure_in_parent.
+        -->
+        <div class="center_figure_in_parent"><img src="http://www.magenta-aps.dk/grafik/toplogo_white.png" alt="Magentas logo" id="Magentas_logo" /></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+=============
+CAIRO VS. FOP
+=============
+
+
+A brief examination
+===================
+
+
+Seaside recommendations
++++++++++++++++++++++++
+
+The free Smalltalk-based Web application framework Seaside offers a page which
+compares different kinds of PDF generation, among these Apache/FOP and Cairo.
+Learning from their experiences will probably be a good start for further
+research.
+
+So, the following points are extracted from
+http://seaside.st/documentation/pdfs
+
+
+What is FOP and Cairo?
+----------------------
+
+* Apache FOP is an XML-based layouting engine.
+* Rome/Cairo is a graphical library with PDF export.
+
+Line breaking
+-------------
+
+* Apache FOP automatically breaks lines.
+* Cairo has Pango, which provides line-breaking.
+
+
+Paragraph breaking over multiple pages
+--------------------------------------
+
+* Apache fop automatically breaks paragraphs over multiple pages.
+* Cairo itself has no concept of pages. Pango provides the basics for breaking text over multiple 
+  boxes, but doesn’t have the notion of pages.
+
+Positioning and font support
+----------------------------
+
+* FOP does not work well with automatic positioning. As with LaTeX, this is by 
+  design.
+* Both FOP and Cairo are Unicode-based and handle all kinds of international
+  fonts. 
+* Additionally, Cairo/Pango is built to support mixed left-to-right and
+  right-to-left, in case we want to include text in Hebrew or Arabic.
+
+Performance
+-----------
+
+* FOP is rather slow when generating PDF. For complicated documents it is a good idea to 
+  cache created files
+* Cairo is integrated and fast.
+
+
+Code examples and libraries
++++++++++++++++++++++++++++
+
+
+Apache FOP
+----------
+
+Example in Java and XSLT available here: 
+    http://www.codeproject.com/Articles/37663/PDF-Generation-using-XSLFO-and-FOP
+
+
+Cairo
+-----
+
+Tutorial for Python programmers available here:
+
+    http://www.tortall.net/mu/wiki/CairoTutorial
+
+Please note that the graphics manipulations in that tutorial is pretty lowlevel
+for our purposes.
+
+*pypdflib* is probably more interesting - a library for creating PDF files
+based on Cairo and Pango:
+
+    https://github.com/santhoshtr/pypdflib
+
+Includes sample code for converting Wikipedia articles and reStructured Text to
+PDF. No information about standards compliance. From a "proof of concept" point
+of view, this library seem comparable to the Apache FOP tool, given that the
+examples are able to convert from a simple, text-based markup format (MediaWiki
+and reST, respectively) to PDF files. 
+
+Conversion to PDF/A?
+++++++++++++++++++++
+
+Apache FOP and pypdflib (~Pango/Cairo) both seem to generate ordinary PDF files
+by default -  "ordinary" as in "non-PDF/A". The library PyODConverter:
+
+    http://www.artofsolving.com/opensource/jodconverter
+    https://github.com/mirkonasato/pyodconverter
+
+can, according to this question on StackOverflow
+
+    http://stackoverflow.com/questions/2146435/convert-pdf-to-pdf-a-1
+
+be used to convert ordinary PDF files to PDF/A. Note that it uses
+OpenOffice/LibreOffice to do that.
+
+Also note, that this implies that PyODConverter will support PDF/A 1a1 if and
+only if LibreOffice does it. 
+
+
+Conclusions and recommendations
++++++++++++++++++++++++++++++++
+
+Summary
+-------
+
+*Apache FOP* has the advantage that it actually has or at least attempts PDF/A-1a
+compatitbily, as specified here:
+    
+        http://xmlgraphics.apache.org/fop/trunk/pdfa.html
+
+It is built in Java and thus requires the introduction of Java technology as
+well as some sort of interoperability layer on the server. The Apache FOP
+solution would use XHTML templates, convert these to XSL/FO and then use FOP to
+create the PDFs. The XHTML templates can easily be rendered by any system
+capable of rendering HTML.
+
+*Cairo and Pango* (in the guise of *pypdflib* - it's too lowlevel for us to use
+directly without launching a somewhat more ambitious project) have the
+advantage of being directly available as a Python library. 
+
+*pypdflib* has the DIS-advantage of apparently not supporting PDF/A-1a. If we
+want to use it, we must either
+
+1. Use PyODConverter or a similar tool to convert the PDFs to PDF/A, or
+2. Implement PDF/A-1a support in pypdflib ourselves. 
+
+As the PDF/A spec mainly consists of banning certain elements from standard
+PDF, the cost of 2. might be defensible. This needs more analysis.
+
+If we wish to use *pypdflib*, we need to decide which kind of template system
+to use. Effectively, we might use more or less anything. If we use reStructured
+Text or a similar markdown service, our web service will always be able to
+convert it to HTML or another "renderable" format, provided the appropriate
+Python libraries are installed.
+
+Recommendations
+---------------
+
+Apache FOP seems to have more long-term promise of PDF/A support. It is also
+somewhat more complicated to integrate in the document broker.
+
+pypdflib is more easily integrable in the document broker and will give us the
+fastest path to a proof of concept implementation. We will need to specify a
+template system the customer can accept, and we will also need to consider the
+long-term status of the project as well as the prospects regarding PDF/A support.
+
+From these considerations, an informed decision will have to be reached. I
+personally favour the last option because it avoids the complication of
+integrating to a Java-based library/service, but of course we need to look at
+the whole picture.

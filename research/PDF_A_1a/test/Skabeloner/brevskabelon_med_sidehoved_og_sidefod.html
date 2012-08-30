@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+    Dette dokument demonstrerer hvordan man sætter en simpel brevstruktur op.
+    Brevet vil have et sidehoved og en højrestillet sidebar.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da-DK">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--
+        Standard HTML title-specifikation.
+        Her defineres dokumentets titel.
+    -->
+    <title>Simpelt brev med sidehoved</title>
+  </head>
+  <body>
+    <!--
+        Her starter den egentlige opsætning af dokumentet.
+        Det er vigtigt at definere marginer og font-family i style-tagget.
+        
+        Læg mærke til at der anvendes amerikansk/engelsk decmaltegn. Altså punktum
+        i stedet for komma.
+    -->
+    <div id="init" style="font-family: Liberation Sans; margin-left: 1cm; margin-top: 1cm; margin-right: 1cm; margin-bottom: 2cm;">
+      <!--
+          De følgende div-tags angiver variable, som anvendes i dokumentstrukturen.
+      -->
+      <div id="page_width">auto</div>     <!--
+                                              Sidens bredde defineret i standard CSS-enheder (in, cm, px etc.).
+                                              Hvis denne sættes til auto bliver bredden svarende til en standard
+                                              A4-side (8,26 in).
+                                          -->
+      <div id="page_height">auto</div>    <!-- Det samme som ovenfor. Auto giver en højde på 11 in -->
+      <div id="header_height">1cm</div>   <!--
+                                              Hvis dokumentet indeholder et sidehoved skal denne parameter sættes.
+                                              Der kan anvendes standard CSS-enheder (cm, in, px etc.).
+                                              Man bør prøve sig lidt frem, for at opnå en optimal højde.
+                                              NB: Højden på sidehovedet skal passe sammen med topmargen i sidedefinitionen,
+                                              ellers kommer de til at overlappe hinanden.
+                                          -->
+      <div id="footer_height">2cm</div>   <!--
+                                              Hvis dokumentet indeholder en sidefod skal denne parameter sættes.
+                                              Det samme gælder som ovenfor.
+                                          -->
+      <div id="text_mode">start</div>     <!--
+                                              Hvordan teksten skal fremstå på siden. Denne værdi kan sættes til
+                                              enten start eller justify. Start betyder at teksten aligner til siden
+                                              af dokumentet, men justify betyder at teksten aligner til både højre
+                                              og venstre side af dokumentet (som i en avis) med større mellemrum
+                                              imellem ordene til følge.
+                                          -->
+      <div id="text_direction">lr-tb</div><!--
+                                              Teksretningen i dokumentet. Normaltvis vil denne være lr-tb, so betyder
+                                              left-to-right top-to-bottom. Dette er standard for vestlige sprog.
+                                              Mulige værdier er: lr-tb, rl-tb og tb-lr.
+                                          -->
+      <div id="hyphenize">true</div>      <!--
+                                              Skal ord ombrydes? Mulige værdier: true og false.
+                                          -->
+
+      <!--
+          Herunder defineres de anvendte tekst-tags.
+          Definitionerne vil bliver anvendt i hele dokumentet, hvor disse tags
+          anvendes.
+          
+          NB: anvendte tags SKAL defineres her.
+      
+          Det er naturligvis muligt at style tekster i dokumentet, men der skal
+          være en fallback-definition.
+      -->
+      <div id="def_p" style="font-family: Liberation Sans Narrow; font-size: 10pt;" />
+      <div id="def_h1" style="font-family: Liberation Sans; font-size: 14pt; font-weight: bold; padding-bottom: 0.25cm;" />
+      <div id="def_h2" style="font-family: Liberation Sans; font-size: 12pt; font-weight: bold; padding-bottom: 0.1cm; color: rgb(25,25,25); text-align: center;" />
+      <!--
+          I div-blokken herunder definerer vi et sidehoved for dokumentet.
+          Læg mærke til at marginer for sidehovedet defineres særskilt. Disse er
+          er uafhængige af dokumentets opsætning.
+      -->
+      <div id="page_header" style="margin-top: 0.2cm; margin-left: 1cm; margin-right: 0.2cm;">
+        <!--
+            Her vil vi gerne have en blok til at være højrestillet og derfor
+            anvender vi text-align i en style-attribut. Deri angiver vi indholdet.
+        -->
+        <div style="text-align: right;">
+          <img src="http://www.magenta-aps.dk/grafik/toplogo_white.png" alt="Magentas logo" id="Magentas_logo" width="90" />
+        </div>
+      </div>
+      <!--
+          I div-blokken herunder definerer vi en sidefod for dokumentet.
+      -->
+      <div id="page_footer" style="margin: 0; padding: 0.2cm; background-color: rgb(225,225,225);">
+        <table width="100%">
+          <tr>
+            <td>
+              <p style="font-size: 8pt;">Økonomiafdelingen</p>
+              <p style="font-size: 8pt;">Kongensgade 2</p>
+              <p style="font-size: 8pt;">København</p>
+            </td>
+            <td style="text-align: center;">
+              <p style="font-size: 8pt;">EAN: 32455654656</p>
+              <p style="font-size: 8pt;">VAT: 3345345454</p>
+              <p style="font-size: 8pt;">Sagsnr: #sagsnummer</p>
+            </td>
+            <td style="text-align: right;">
+              <p style="font-size: 8pt;">Tlf: 12345678</p>
+              <p style="font-size: 8pt;">mail: oek@oke.dk</p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!--
+          Her definerer vi vores brødtekst.
+      -->
+      <div id="page_contents">
+        <!--
+            Vi anvender de tekst-tags vi definerede ovenfor.
+            Læg mærke til at der i de to overskrifter er defineret en title- og id-attribut.
+            Disse anvendes til at fremstille bogmærker til overskrifterne. Bogmærker er vigtige
+            for at dokumentetet kan erklæres conformant PDF/A 1a.
+        -->
+        <div class="alignment_block" style="width: 100%; margin-bottom: 1cm;">
+          <div class="block_left">
+            <p>#modtagers_navn</p>
+            <p>#modtagers_adresse</p>
+          </div>
+          <div class="block_right">
+            <p>Tlf: #afsenders_telefon</p>
+            <br/>
+            <p>#afsenders_navn</p>
+            <p>#afsensers_adresse</p>
+            <br/>
+            <p>#afsendelsessted den #afsenselsesdato</p>
+          </div>
+        </div>
+        <h1 id="foerste_afsnit" title="First header">Vedr. #sagsnummer</h1>
+        <p>I dette brev har vi anvendt et billed som sidehoved samt en sidefod til kontaktoplysninger. Der er indsat felter vhj. &#35;-tegn. Disse felter bruges til at indflette data i brevet. Der kan tilføjes informationer om afsender og modtager samt et sagsnummer.</p>
+        <!--
+            Her fremprovokerer vi et linjeskift i det endelige dokument.
+        -->
+        <br/>
+        <p>Nu skifter vi lige til en ny linje og derefter skifter vi til en ny side.</p>
+        <!--
+            Her fremprovokerer vi et sideskift i det endelige dokument.
+        -->
+        <div class="page_break" />
+        <p>Her er den nye side og vi kan se hvordan sidebaren og sidehovedet følger med. Vi tager lige en side mere.</p>
+        <div class="page_break" />
+        <!--
+            Her styler vi en tekst og omgår den forud definerede p-style.
+        -->
+        <p style="font-family: Liberation Serif; color: rgb(255,0,0);">Og på denne side har vi ændret farven på teksten til rød. Dette kan man gøre hvor som helst man ønsker det.</p>
+      </div>
+    </div>
+  </body>
+</html>

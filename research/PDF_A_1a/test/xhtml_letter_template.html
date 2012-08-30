@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da-DK">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIMPLE SAMPLE XHTML TEMPLATE</title>
+</head>
+<body>
+<!--
+    I denne div-blok defineres header, footer og bokse. Men det er kun ting, som skal vaere statisk indlejrede i dokumentet
+-->
+<div id="init" style="font-family: Liberation Sans; margin-left: 0.25in; margin-top: 1.0in; margin-right: 0.25in; margin-bottom: 0.75in;">
+<!--
+  <div id="sideboks_hoejre">
+    <span style="background-color: rgb(200,200,200);">Hoejrestillet boks</span>
+  </div>
+-->
+  <!-- Forsoeg paa implementering af sidehoved og sidefod -->
+  <div id="page_header">
+    <p style="text-align: center">#page_header</p>
+    <div class="alignment_block" style="width: 100%;">
+      <div class="block_right">
+	<img src="http://www.magenta-aps.dk/grafik/toplogo_white.png" alt="logo" />
+      </div>
+    </div>
+  </div>
+  <div id="page_footer_with_page_number" style="margin-left: 0.25in; margin-right: 0.25in; margin-bottom: 0.25in">Journalnr. #journalnummer</div>
+  <div id="page_contents">
+    <div class="alignment_block" style="width: 100%;">
+      <div class="block_left">
+        <div style="">
+	  <p>#modtager_navn</p>
+	  <p>#modtager_adresse</p>
+	</div>
+      </div>
+      <div class="block_right">
+        <div style="border-left: 1px solid rgb(200,200,200);">
+	  <p>#afsender_sted den #afsender_dato</p>
+	  <p>#afsender_navn</p>
+	  <p>#afsender_adresse</p>
+          <div>
+	    <p>Telefon: 12345678</p>
+	    <p>Web: www.magenta-aps.dk</p>
+	  </div>
+	</div>
+      </div>
+    </div>
+    <h5>SIMPLE SAMPLE XHTML TEMPLATE</h5>
+    <h6 id="circular-memo-sent-on-date-to-count-recipients">Circular memo sent on #date to #count recipients</h6>
+    <p>Dear all,</p>
+    <p>it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</p>
+    <p>Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</p>
+    <p>best regards,</p>
+    <div class="page_break" />
+    <b>En ny side</b>
+    <p>Bare lige for at teste sideskift.</p>
+  </div>
+</div>
+</body>
+</html>

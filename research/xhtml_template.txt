@@ -1,0 +1,21 @@
+++++++++++++++++++++++++++++
+SIMPLE SAMPLE XHTML TEMPLATE
+++++++++++++++++++++++++++++
+
+Circular memo sent on #date to #count recipients
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Dear all,
+
+it is with the utmost pleasure that I can notify you that all employees
+receiving this notice are due an immediate 10% salary increase, payable from
+the 1st of this month of #month, #year.
+
+Do not hesitate to contact me if you did not receive this memo, if you did not
+receive the increase or you have any other sort of doubts in the matter.
+
+
+best regards,
+
+#ceo_first_name #ceo_last_name
+

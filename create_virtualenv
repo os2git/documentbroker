@@ -1,0 +1,48 @@
+#/usr/bin/env bash
+# Installs the virtual environment and the necessary Python packages
+# needed for running the document broker web service.
+# ALWAYS RUN IN DIRECTORY ROOT AFTER CHECKING OUT FROM GIT!
+
+if [ -e ./bin/activate ]
+then
+    echo "virtual environment already installed"
+    exit
+fi
+
+# Establish virtualenv
+
+virtualenv .
+source bin/activate
+
+# Install Django and additional packages
+
+pip install Django
+
+# Install PostgreSL interface. Assume Postgres itself is already installed.
+pip install psycopg2
+
+# Install XML-RPC capability
+pip install django_xmlrpc
+
+# Install lxml - a requirement for lpod to work
+# If this fails, you need to install libxml2-dev and libxslt-dev.
+pip install lxml
+
+# PISA and dependencies for PDF generation
+pip install pisa
+pip install reportlab
+pip install html5lib
+pip install pil
+
+# Photologue - note, PIL MUST be reinstalled using the instructions in this
+# post: http://ubuntuforums.org/showpost.php?p=10804763&postcount=2 if
+# Photologue JPEG support is to work
+pip install django-photologue
+
+# Install lpod 0.9.3 - not available through pip or easy_install.
+third_party/install_lpod.sh
+
+
+
+
+

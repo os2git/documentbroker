@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="da">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>SIMPLE SAMPLE XHTML TEMPLATE</title>
+</head>
+<body>
+<!--
+    I denne div-blok defineres header, footer og bokse. Men det er kun ting, som skal være statisk indlejrede i dokumentet
+-->
+<div id="init" style="margin-left: 0.25in; margin-top: 1.5in; margin-right: 0.25in; margin-bottom: 1in;">
+<!--
+  <div id="sideboks_hoejre">
+    <span style="background-color: rgb(200,200,200);">Højrestillet boks</span>
+  </div>
+-->
+  <!-- Forsøg på implementering af sidehoved og sidefod -->
+  <div id="sidehoved">
+    <span style="text-align: right; float: right; width: 100%;"><img src="file:///home/dennis/Documents/git-repositories/development/document_broker/research/PDF_A_1a/test/logo.jpg" alt="logo" /></span>
+    <p style="text-align: center">#sidehoved</p>
+  </div>
+  <div id="sidefod_med_sidetal" style="margin-left: 0.25in; margin-right: 0.25in; margin-bottom: 0.25in">#sidefod</div>
+  <div id="indhold">
+    <span id="sidestillet_boks" style="float: right; width: 100px; background-color: rgb(200,200,200);">Test af sidestillet boks</span>
+    <h5>SIMPLE SAMPLE XHTML TEMPLATE</h5>
+    <h6 id="circular-memo-sent-on-date-to-count-recipients">Circular memo sent on #date to #count recipients</h6>
+    <p>Dear all,</p>
+    <p>it is with the utmost pleasure that I can notify you that all employees
+    receiving this notice are due an immediate 10% salary increase, payable from
+    the 1st of this month of #month, #year.</p>
+    <p>Do not hesitate to contact me if you did not receive this memo, if you did not
+    receive the increase or you have any other sort of doubts in the matter.</p>
+    <p>best regards,</p>
+  </div>
+</div>
+</body>
+</html>
