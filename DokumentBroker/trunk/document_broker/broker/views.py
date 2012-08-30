@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 
 from models import DocumentBroker
 from utils import authorized, is_valid_login, create_authorization
+from utils import get_client_id
 
 import sys
 
@@ -25,8 +26,9 @@ def authorize(client_id, password):
 def generate(user_authentication, template_id, fields):
     """Get template from template server and generates document.
     Store document in suitable place and return URL to retrieve it."""
-
-    broker = DocumentBroker(user_authentication[0])
+    
+    clid = get_client_id(user_authentication)
+    broker = DocumentBroker(clid)
     broker.generate_document(template_id, fields)
 
 @authorized
@@ -37,3 +39,4 @@ def acknowledge(user_authentication, document):
     raise RuntimeError(
             "{0} {1} This has not yet been implemented!".format(
                 user_authentication, document))
+

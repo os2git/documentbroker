@@ -25,6 +25,11 @@ def create_authorization(client_id, password):
     else:
         return ""
 
+def get_client_id(authorization):
+    """Retrieves the client ID from an authorization block.
+    TODO: This and the preceding and following functions need refactoring."""
+    return authorization.split('@')[0]
+
 def authorized(function):
     def _authorized(*args, **kw):
         # TODO: perform some sort of cryptographic UN-wrapping.
