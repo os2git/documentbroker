@@ -6,6 +6,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
+    url(r'^demo/$', include('demo.urls')),
+    url(r'^demo/show_fields/(?P<template>[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/$', 'demo.views.show_fields'),
     # url(r'^$', 'document_broker.views.home', name='home'),
     # url(r'^document_broker/', include('document_broker.foo.urls')),
 

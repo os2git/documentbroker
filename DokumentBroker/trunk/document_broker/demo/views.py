@@ -4,10 +4,13 @@ from django.template import RequestContext
 from django.http import HttpResponseNotFound
 
 from forms import SelectTemplateForm, FieldsForm
-from utils import generate_document, get_template_fields
+from utils import generate_document, get_template_fields, get_templates
 
 def select_template(request):
     form = SelectTemplateForm(request.POST or None)
+    # Reload template list so new templates are included.
+    form.fields['template'].choices = get_templates()
+
     if form.is_valid():
         # Supply template ID for show_fields
         return redirect('show_fields/{0}/'.format(request.POST['template']))
