@@ -1,0 +1,11 @@
+include create_virtualenv
+include COPYING
+include INSTALL
+include VERSION
+recursive-include document_broker *
+recursive-include document_templates *
+recursive-include research *
+recursive-include third_party *
+recursive-include client *
+recursive-include plugins *
+

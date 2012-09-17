@@ -1,0 +1,36 @@
+# Ignore virtualenv files #
+
+bin
+include
+local
+dist
+build
+document_broker.egg-info
+lib/python2.7
+
+# Ignore various . files
+
+.bash_history
+.viminfo
+.pip
+.gvimrc
+.vimrc
+.vim
+.fontconfig/
+.ipython/
+.libreoffice/
+.pyhistory
+.subversion
+
+# Ignore swap and binary Python files
+#
+*.swp
+*.pyc
+
+# Ignore files in site-media folders.
+
+site-media
+
+# Ignore log files
+
+logs

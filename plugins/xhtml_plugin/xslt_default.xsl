@@ -595,25 +595,28 @@ The style will furthermore be used together with the Apache FOP renderer.
 	  -->
 
 	  <fo:bookmark-tree>
-      <!--
-          First we list the text bookmarks by traversing through the h1-6 and p tags of the document,
-          but only if they contain a title and id attribute.
-      -->
-	    <xsl:for-each select="//html:div[@id = 'page_contents']/html:h1[@title and @id] | //html:div[@id = 'page_contents']/html:h2[@title and @id] | //html:div[@id = 'page_contents']/html:h3[@title and @id] | //html:div[@id = 'page_contents']/html:h4[@title and @id] | //html:div[@id = 'page_contents']/html:h5[@title and @id] | //html:div[@id = 'page_contents']/html:h6[@title and @id] | //html:div[@id = 'page_contents']/html:p[@title and @id]">
+            <!--
+                By default all h1-6 will be bookmarked. Other tags can also be bookmarked,
+                but only if they contain a title and id attribute.
+            -->
+	    <xsl:for-each select="//*/html:h1 | //*/html:h2 | //*/html:h3 | //*/html:h4 | //*/html:h5 | //*/html:h6 | //*[not(local-name()='img' or local-name()='table')][@title and @id]">
 	      <xsl:call-template name="process-bookmarks" />
 	    </xsl:for-each>
-      <!-- Next we list the figures/tables by traversing those respectively. -->
-	    <xsl:for-each select="//*/html:div[@class = 'alignment_block'][@title and @id] | //*/html:div[starts-with(@class, 'figure')][@title and @id]">
+            <!--
+                Next we list the figures/tables by traversing those. Only elements
+                with a title and an id attributes declared will be bookmarked.
+            -->
+	    <xsl:for-each select="//*/html:div[@class = 'alignment_block'][@title and @id] | //*/html:div[starts-with(@class, 'figure')][@title and @id] | //*/html:img[@title and @id]">
 	      <xsl:call-template name="process-bookmarks-figures" />
 	    </xsl:for-each>
 	  </fo:bookmark-tree>
     
-    <!--
-        PAGE SETUP
-    -->
+          <!--
+              PAGE SETUP
+          -->
 
 	  <fo:page-sequence master-reference="all-pages" role="Part">
-      <!-- We define the static parts of the document based on the info provided by the XHTML -->
+            <!-- We define the static parts of the document based on the info provided by the XHTML -->
 	    <fo:title xml:lang="en-US"><xsl:value-of select="/html:html/html:head/html:title"/></fo:title>
 	    <xsl:for-each select="child::html:div">
 	      <xsl:choose>
@@ -783,16 +786,42 @@ The style will furthermore be used together with the Apache FOP renderer.
   -->
 
   <xsl:template name="process-bookmarks">
-    <xsl:if test="@title">
-      <fo:bookmark>
-        <!-- Here we set the anchor for the bookmark -->
-        <xsl:attribute name="internal-destination"><xsl:value-of select="@id" /></xsl:attribute>
-        <!-- and here we set the title -->
-        <fo:bookmark-title>
-          <xsl:value-of select="@title" />
-        </fo:bookmark-title>
-      </fo:bookmark>
-    </xsl:if>
+    <fo:bookmark>
+      <!-- Here we set the anchor for the bookmark -->
+      <xsl:choose>
+        <xsl:when test="@id">
+          <!-- 
+              If the element contains an id we use this as an anchor for the
+              bookmark. 
+          -->
+          <xsl:attribute name="internal-destination"><xsl:value-of select="@id" /></xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <!-- Otherwise we create an id for the element to which we anchor the 
+               bookmark. -->
+          <xsl:attribute name="internal-destination"><xsl:call-template name="generate-id" /></xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+      <!-- and here we set the title -->
+      <fo:bookmark-title>
+        <xsl:choose>
+          <xsl:when test="@title">
+            <!--
+                If a title attribute is declared we use that value for the
+                value of the bookmark.
+            -->
+            <xsl:value-of select="@title" />
+          </xsl:when>
+          <xsl:otherwise>
+            <!--
+                Otherwise we use the value of the element as the value of
+                the bookemark.
+            -->
+            <xsl:value-of select="./text()" />
+          </xsl:otherwise>
+        </xsl:choose>
+      </fo:bookmark-title>
+    </fo:bookmark>
   </xsl:template>
   
   <!--
@@ -802,14 +831,17 @@ The style will furthermore be used together with the Apache FOP renderer.
   -->
 
   <xsl:template name="process-bookmarks-figures">
-    <xsl:if test="@title">
-      <fo:bookmark>
-        <xsl:attribute name="internal-destination"><xsl:value-of select="@id" /></xsl:attribute>
-        <fo:bookmark-title>
-          <xsl:text>Figur: </xsl:text><xsl:value-of select="@title" />
-        </fo:bookmark-title>
-      </fo:bookmark>
-    </xsl:if>
+    <!--
+        We take for granted that elements supplied to the template both have a
+        title and an id attribute declared. So we just use those values to
+        define a bookmark.
+    -->
+    <fo:bookmark>
+      <xsl:attribute name="internal-destination"><xsl:value-of select="@id" /></xsl:attribute>
+      <fo:bookmark-title>
+        <xsl:text>Figur: </xsl:text><xsl:value-of select="@title" />
+      </fo:bookmark-title>
+    </fo:bookmark>
   </xsl:template>
   
   <!--
@@ -819,15 +851,15 @@ The style will furthermore be used together with the Apache FOP renderer.
   -->
 
   <xsl:template name="process-master-set">
-	  <fo:layout-master-set>
+    <fo:layout-master-set>
       <!-- This layout will count for all pages in the resulting PDF document. -->
-	    <fo:simple-page-master master-name="all-pages" xsl:use-attribute-sets="page">
+      <fo:simple-page-master master-name="all-pages" xsl:use-attribute-sets="page">
         <!-- Here we define the layout for the body region of the document. -->
-	      <fo:region-body>
+        <fo:region-body>
           <xsl:call-template name="process-style">
             <xsl:with-param name="style" select="substring-after(@style, ';')"/>
           </xsl:call-template>
-	      </fo:region-body>
+        </fo:region-body>
         <xsl:choose>
           <xsl:when test="$writing-mode = 'tb-rl'">
             <xsl:choose>
@@ -927,7 +959,43 @@ The style will furthermore be used together with the Apache FOP renderer.
 	    </fo:simple-page-master>
 	  </fo:layout-master-set>
   </xsl:template>
-
+  
+  <!--
+      Generate an id if missing
+  -->
+  
+  <xsl:template name="generate-id">
+    <!--
+        If someone should have forgotten to specify an id tag we try to
+        create one based the elements value and the surrounding elements.
+        This is by no far bullet proof, but a sort of fallback.
+        We simply concatenate the value of the current tag and its parent
+        and first child (if such are present).
+    -->
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::node() and following-sibling::node()">
+        <xsl:value-of select="self::node()/text()"/>
+        <xsl:value-of select="preceding-sibling::node()[1]/text()"/>
+        <xsl:value-of select="following-sibling::node()[1]/text()"/>
+        <!--<xsl:value-of select="concat(self::text(),../text(),*[1]::text())"/>-->
+      </xsl:when>
+      <xsl:when test="preceding-sibling::node()">
+        <xsl:value-of select="self::node()/text()"/>
+        <xsl:value-of select="preceding-sibling::node()/text()"/>
+        <!--<xsl:value-of select="concat(self::text(),../text())"/>-->
+      </xsl:when>
+      <xsl:when test="following-sibling::node()">
+        <xsl:value-of select="self::node()/text()"/>
+        <xsl:value-of select="following-sibling::node()/text()"/>
+        <!--<xsl:value-of select="concat(self::text(),*[1]::text())"/>-->
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="self::node()/text()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  
   <!--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
    process common attributes and children
   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
@@ -1004,13 +1072,25 @@ The style will furthermore be used together with the Apache FOP renderer.
         </xsl:attribute>
       </xsl:when>
     </xsl:choose>
-
+    <!--
+        We need ids to create bookmarks for h1-6 tags. If one is not declared
+        we declare one.
+    -->
+    <xsl:if test="local-name() = 'h1' or local-name() = 'h2' or local-name() = 'h3' or local-name() = 'h4' or local-name() = 'h5' or local-name() = 'h6' or (local-name() = 'p' and @id and @title) or (local-name() = 'img' and @id and @title)">
+      <xsl:choose>
+        <xsl:when test="@id">
+          <xsl:attribute name="id">
+            <xsl:value-of select="@id"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="id">
+            <xsl:call-template name="generate-id" />
+          </xsl:attribute>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
     <xsl:choose>
-      <xsl:when test="@id">
-        <xsl:attribute name="id">
-          <xsl:value-of select="@id"/>
-        </xsl:attribute>
-      </xsl:when>
       <xsl:when test="self::html:a/@name">
         <xsl:attribute name="id">
           <xsl:value-of select="@name"/>
