@@ -17,12 +17,11 @@ pushd $INSTALL_DIR > $LOGFILE
 
 echo "Installing lpod ..." 
 
-wget -c $LPOD_SOURCE 2&>1 >> $LOGFILE
-
-tar xvf lpod-python-0.9.3.tar.gz >> $LOGFILE
+git clone git://gitorious.org/lpod-project/lpod-python.git >> $LOGFILE
 
 
-cd lpod-python-0.9.3 >> $LOGFILE
+
+cd lpod-python >> $LOGFILE
 
 python setup.py install >> $LOGFILE
 

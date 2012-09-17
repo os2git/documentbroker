@@ -14,6 +14,17 @@ fi
 virtualenv .
 source bin/activate
 
+# create softlinks
+cd document_broker
+ln -s ../client 
+ln -s ../plugins
+
+cd ..
+cd document_templates
+ln -s ../client
+ln -s ../plugins
+cd ..
+
 # Install Django and additional packages
 
 pip install Django
@@ -38,6 +49,9 @@ pip install pil
 # post: http://ubuntuforums.org/showpost.php?p=10804763&postcount=2 if
 # Photologue JPEG support is to work
 pip install django-photologue
+
+# PEP8 module for testing purposes. Currently we need v. 1.2
+pip install pep8==1.2
 
 # Install lpod 0.9.3 - not available through pip or easy_install.
 third_party/install_lpod.sh

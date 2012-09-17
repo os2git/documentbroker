@@ -16,6 +16,13 @@ other operating systems MUST be installed on your system:
     apache2
     libapache2-mod-wsgi
 
+For PDF support:
+    fop 
+
+For ODF/lpOD support:
+    libxml2-dev
+    libxslt-dev
+
 If using the built-in Photologue image storage in the template server, these
 packages are also necessary:
 

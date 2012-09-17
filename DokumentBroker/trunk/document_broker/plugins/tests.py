@@ -7,18 +7,14 @@
 #
 # This file is part of the Magenta Document Broker.
 #
-# The Magenta Document Broker is free software: you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 # This program is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranties of
 # MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License along
-# with this program.  If not, see <http://www.gnu.org/licenses/>.
+# PURPOSE.  See the Mozilla Public License for more details.
 """ Test module for the document plugins."""
 
 # TODO: Use proper unit test framework. For now, stick to Ellehammer test.
@@ -79,7 +75,7 @@ def test_danish_characters():
 if __name__ == '__main__':
 
     #test_plugin_defs()
-    #test_odf_plugin()
+    test_odf_plugin()
     #test_xhtml_plugin()
-    test_danish_characters()
+    #test_danish_characters()
     #test_list_plugins()

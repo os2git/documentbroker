@@ -1,0 +1,14 @@
+
+* Version 0.1.2, September 17, 2012.
+
+New in this version:
+
+ - Release process improved, using standard setuptools and setup.py.
+
+ - Ticket 6243: lpod tarball installation was broken, now installs from git 
+   repository.
+
+ - Ticket 6342: Bookmarks default text fixed.
+
+ - Ticket 6351: Code relicensed from MPL to GPL.
+
