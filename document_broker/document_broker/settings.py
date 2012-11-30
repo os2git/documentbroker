@@ -25,22 +25,26 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 INSTALL_DIR = get_install_dir()
+ROOT_DIR = os.path.abspath(os.path.join(INSTALL_DIR, '..'))
 CUSTOM_TEMPLATES = os.path.join(INSTALL_DIR, 'django_templates')
 
 ADMINS = (
-    ('Carsten Agger', 'carstena@magenta-aps.dk'),
+    #    TODO: Insert your data here
+    #    ('Your Name', 'your_email@your_domain.tld'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'document_broker',
-        'USER': 'document_broker',
-        'PASSWORD': 'document_broker',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(ROOT_DIR, '.db/broker_database')
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #'NAME': 'document_broker',
+        #'USER': 'document_broker',
+        #'PASSWORD': 'document_broker',
+        #'HOST': '',
+        #'PORT': '',
     }
 }
 
@@ -74,6 +78,14 @@ USE_TZ = True
 # Example: "/home/media/media.lawrence.com/media/"
 # TODO: Fix this during installation.
 MEDIA_ROOT = os.path.join(INSTALL_DIR, 'site-media')
+
+# This variable defines the resolusion to be used when producing thumbnail
+# images for templates.
+THUMBNAIL_RESOLUSION = 16
+
+# This variable defines the resolusion to be used when producing example
+# images for templates.
+TEMPLATE_EXAMPLE_RESOLUSION = 72
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -122,9 +134,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'broker.middleware.ThreadLocals',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+SSL_AUTHENTICATION = False
 
 ROOT_URLCONF = 'document_broker.urls'
 
@@ -167,6 +182,9 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 XMLRPC_METHODS = (
     # List methods to be exposed in the form (<method path>, <xml-rpc name>,)
     ('broker.views.generate_document', 'generate_document'),
+    ('broker.views.generate_preview', 'generate_preview'),
+    ('broker.views.generate_fo_template', 'generate_fo_template'),
+    ('broker.views.generate_template_image', 'generate_template_image'),
     ('broker.views.get_client_systems', 'get_client_systems'),
     ('broker.views.get_authorization', 'get_authorization'),
     ('broker.views.get_plugin_mappings', 'get_plugin_mappings'),

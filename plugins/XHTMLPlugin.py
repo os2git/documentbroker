@@ -17,12 +17,15 @@
 """This file implements the XHTML generator plugin for the Document Broker."""
 
 import re
+import os
 from lxml import etree
 from cgi import escape
 
+from django.conf import settings
 from document_plugin import DocumentPlugin
-from xhtml_plugin import get_xhtml2pdf
+from xhtml_plugin import get_xhtml2pdf, get_fo, fo2pdf
 from xhtml_plugin import FOP, PISA
+from xhtml_plugin.preview_generator import ImagePreview
 
 FILE_DIR = 'xhtml_plugin'
 
@@ -81,26 +84,94 @@ class XHTMLPlugin(DocumentPlugin):
 
     def generate_document(self, template_path, output_path, fields,
             as_pdf=False):
-        """Generate XHTML document from template.
+        """Generate PDF/XHTML document from template.
 
         Log error and possibly throw exception in case of failure."""
         try:
-            with open(template_path, 'r') as f:
-                xhtml_string = f.read()  # slurp!
-                for (field, value) in fields.items():
-                    # Remove possibly noxious HTML tags from input
-                    value = escape(value)
-                    value = value.encode('utf8')
-                    xhtml_string = xhtml_string.replace('#' + field, value)
-
+            #xhtml2pdf(xhtml_string, output_path)
+            """
+            Instead of generating PDF documents from XHTML templates
+            we do it from XSL-FO templates:
+            """
+            # TODO:
+            # We should probably check if an XSL-FO ghost template
+            # actually exists before attempting to use it.
+            # For now we assume it exists:
             if as_pdf:
-                xhtml2pdf(xhtml_string, output_path)
+                with open(template_path, 'r') as f:
+                    contents_string = f.read()  # slurp!
+                    for (field, value) in fields.items():
+                        # Remove possibly noxious HTML tags from input
+                        value = escape(value)
+                        value = value.encode('utf-8')
+                        contents_string = contents_string.replace(
+                                '#' + field, value
+                        )
+                ext = template_path[(template_path.rfind(".") + 1):].upper()
+                if ext == "FO":
+                    fo2pdf(contents_string, output_path)
+                else:
+                    xhtml2pdf(contents_string, output_path)
             else:
+                with open(template_path, 'r') as f:
+                    xhtml_string = f.read()  # slurp!
+                    for (field, value) in fields.items():
+                        # Remove possibly noxious HTML tags from input
+                        value = escape(value)
+                        value = value.encode('utf-8')
+                        xhtml_string = xhtml_string.replace('#' + field, value)
                 with open(output_path, 'w') as f:
                     f.write(xhtml_string)
 
         except Exception as e:
             raise
+
+    def generate_xsl_fo_ghost_document(self, template_path, fo_file):
+        fo_file = os.path.join(settings.MEDIA_ROOT, fo_file)
+        """Generate XSL-FO document from template.
+
+        Log error and possibly throw exception in case of failure."""
+        try:
+            with open(template_path, 'r') as f:
+                contents_string = f.read()  # slurp!
+                get_fo(contents_string, fo_file)
+        except Exception as e:
+            raise
+
+    def generate_preview(self, template_path, output_path, fields,
+        return_format, resolusion):
+        """Generate preview from template.
+
+        Log error and possibly throw exception in case of failure."""
+        extension = template_path[template_path.rfind("."):]
+        try:
+            with open(template_path, 'r') as f:
+                xhtml_string = f.read()  # slurp!
+                if fields is not None:
+                    for (field, value) in fields.items():
+                        # Remove possibly noxious HTML tags from input
+                        value = escape(value)
+                        value = value.encode('utf8')
+                        xhtml_string = xhtml_string.replace('#' +
+                            field, value)
+            if resolusion == 0:
+                resolusion = 72
+            ImagePreview.generate_preview(xhtml_string, output_path,
+                return_format, resolusion, extension)
+        except Exception as e:
+            raise
+
+    def generate_template_image(self, template_path, output_path, resolusion,
+            image_type):
+        """Generate preview from template.
+
+        Log error and possibly throw exception in case of failure."""
+        extension = template_path[template_path.rfind("."):]
+        with open(template_path, 'r') as f:
+            xhtml_string = f.read()  # slurp!
+        ImagePreview.generate_template_image(
+            xhtml_string, output_path, image_type, resolusion, extension
+        )
 
     def extract_document_fields(self, path):
         """Extract fields from XHTML template, return (field, value_type)

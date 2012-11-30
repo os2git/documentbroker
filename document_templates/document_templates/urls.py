@@ -20,10 +20,19 @@ import os
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from util.helpers import get_install_dir
+from tastypie.api import Api
+from rest_api import templates_api as rest_api
 
 # Enable admin:
 from django.contrib import admin
 admin.autodiscover()
+
+api_test = Api(api_name='test')
+api_test.register(rest_api.TemplatesResource())
+api_test.register(rest_api.TemplatesFieldsResource())
+api_test.register(rest_api.PrecompiledTemplateResource())
+api_test.register(rest_api.ThumbnailResource())
+api_test.register(rest_api.ExampleResource())
 
 urlpatterns = patterns(
     '',
@@ -38,6 +47,9 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^billeder/', include('photologue.urls')),
     url(r'^template-xml/$', 'django_xmlrpc.views.handle_xmlrpc'),
+    # REST examples:
+    (r'^rest_api/', include(api_test.urls),
+    )
 )
 
 if settings.DEBUG:

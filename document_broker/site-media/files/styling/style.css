@@ -1,0 +1,39 @@
+html {min-height:100%;}
+body {padding:0;margin:0;background-color:#f0f0f0;font-size:10px;font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, 'Lucida Grande', sans-serif;min-height:100%;}
+#page-wrapper {width:860px;margin:0 auto;background-color:#fcfcfc;font-size:1.3em;line-height:1.4em;position:relative;padding:2em 1em;min-height:100%;}
+h2 {font-size:inherit;font-size:2.4em;margin-top:0;line-height:1em;margin-bottom:.5em;}
+#content-wrapper {float:left;width:449px;position:relative;clear:left;}
+hr {height:.07692307692em;color:#eee;background-color:#eee;border:0;}
+#view-wrapper {float:right;text-align:right;margin:0 0 0 1em;display:block;clear:right;}
+#preview-img {width:396px;height:528px;border:.07692307692em solid #ddd;margin:0;padding:0;}
+#temp-grid {font-size:.7692307692em;}
+#temp-grid button {background:none;border:0;text-align:left;padding:0;margin:0;font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, 'Lucida Grande', sans-serif;}
+#temp-grid button:hover {text-decoration:underline;cursor:pointer;}
+#temp-grid img {border:.1em solid #ddd;max-width:100%;}
+#temp-grid img:hover {cursor:pointer;}
+#temp-grid td {width:33.33333333%;text-align:left;vertical-align:top;padding:0 1em 1em 0;}
+label {float:left;clear:left;line-height:2em;width:6em;}
+input,
+select {float:left;clear:right;line-height:1.5em;margin:.25em 0}
+.foldud {float:left;width:33%;}
+.foldud,
+.foldud ul {margin:0;padding:0;list-style-type:none;display:inline;height:3em;line-height:3em;}
+.checksum,
+.foldud li {margin:1em 0 0;padding:0;height:3em;line-height:3em;font-size:1em;background-color:#eee;text-align:center;border:2px outset #ddd;}
+.checksum:hover,
+.foldud li:hover {cursor:pointer;background-color:#f3f3f3;}
+.checksum:active,
+.foldud > li:active {border:2px inset #ddd;}
+.foldud li ul {display:none;margin-left:-2px;position:relative;z-index:2;}
+.foldud li ul li {width:150%;text-align:left;padding:0 1em;margin-top:0;border-width:0;border-top:1px solid #ddd;}
+.foldud img {max-height:50%;vertical-align:middle;margin-right:.5em;}
+.okdownload,
+.genpdf {border:2px outset #ddf;width:33%;padding:0;background-color:#eef;margin:1em 0 0 1em;height:3.3076923077em;line-height:3em;font-family:'Helvetica Neue', HelveticaNeue, Helvetica, Arial, 'Lucida Grande', sans-serif;font-size:1em;position:relative;z-index:1;}
+.okdownload,
+.checksum {float:none;display:inline;width:33%;height:3.3076923077em;}
+.okdownload:hover,
+.genpdf:hover {cursor:pointer;background-color:#f3f3ff;}
+.okdownload:active,
+.genpdf:active {border:2px inset #f3f3ff;}
+.hidden {display:none;}
+.visible {display:block !important;}

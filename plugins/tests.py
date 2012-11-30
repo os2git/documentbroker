@@ -47,8 +47,22 @@ def test_plugin(plugin, template_path, fields, output_path, as_pdf=False):
     plugin.generate_document(template_path, output_path, fields, as_pdf)
 
 
+def test_xsl_fo_plugin(plugin, template_path, fo_file):
+    plugin.generate_xsl_fo_ghost_document(template_path, fo_file)
+
+
+def test_image_preview_plugin(plugin, template_path, output_path, fields,
+        return_format, resolusion):
+    plugin.generate_preview(template_path, output_path, fields, return_format,
+            resolusion)
+
+
+def test_xsl_fo_plugin(plugin, template_path, fo_file):
+    plugin.generate_xsl_fo_ghost_document(template_path, fo_file)
+
+
 def test_odf_plugin():
-    template_path = 'tests/2ca21031-72b2-4dd4-a81a-b433864e1673.ott'
+    template_path = 'plugins/tests/2ca21031-72b2-4dd4-a81a-b433864e1673.ott'
     fields = {}
     fields['Leif'] = 'Carsten Agger'
     fields['Dato'] = '2012-05-01'
@@ -58,24 +72,72 @@ def test_odf_plugin():
 
 
 def test_xhtml_plugin():
-    template_path = "tests/xhtml_template.html"
+    print "TESTING XHTML PLUGIN:"
+    template_path = "plugins/tests/xhtml_template.html"
     fields = {'ceo_first_name': 'Carsten', 'ceo_last_name': 'Agger', 'date':
               '13-03-33', 'count': '42'}
-    output_path = 'tests/pdf1a_output.pdf'
+    output_path = 'plugins/tests/pdf1a_output.pdf'
     test_plugin(XHTMLPlugin(), template_path, fields, output_path, as_pdf=True)
 
 
+def test_xsl_fo_generation():
+    print "TESTING FO FILE:"
+    template_path = "plugins/tests/xhtml_template.html"
+    fo_file = "plugins/tests/xhtml_template.fo"
+    test_xsl_fo_plugin(XHTMLPlugin(), template_path, fo_file)
+
+
+def test_xhtml_plugin_with_fo_file():
+    print "TESTING GENERATION FROM FO FILE:"
+    template_path = "plugins/tests/xhtml_template.fo"
+    fields = {'ceo_first_name': 'Carsten', 'ceo_last_name': 'Agger', 'date':
+              '13-03-33', 'count': '42'}
+    output_path = 'plugins/tests/pdf1a_output.pdf'
+    test_plugin(XHTMLPlugin(), template_path, fields, output_path, as_pdf=True)
+
+
+def test_xhtml_image_preview_plugin(return_format="png", resolusion=48):
+    print "TESTING IMG: " + return_format
+    template_path = "plugins/tests/xhtml_template.html"
+    fields = {'ceo_first_name': 'Carsten', 'ceo_last_name': 'Agger', 'date':
+              '13-03-33', 'count': '42'}
+    output_path = 'plugins/tests/pdf1a_output.png'
+    test_image_preview_plugin(XHTMLPlugin(), template_path, output_path,
+            fields, return_format, resolusion)
+
+
+def test_xhtml_image_example_plugin(type="png", resolusion=48):
+    template_path = "plugins/tests/xhtml_template.html"
+    fields = {'ceo_first_name': 'Carsten', 'ceo_last_name': 'Agger', 'date':
+              '13-03-33', 'count': '42'}
+    output_path = 'plugins/tests/pdf1a_output.pdf'
+    test_plugin(XHTMLPlugin(), template_path, output_path, resolusion,
+            type)
+
+
+def test_all_image_previews():
+    test_xhtml_image_preview_plugin("png", 48)
+    test_xhtml_image_preview_plugin("html", 24)
+    test_xhtml_image_preview_plugin("tar", 24)
+    test_xhtml_image_preview_plugin("zip", 24)
+    test_xhtml_image_preview_plugin("tar.gz", 24)
+    test_xhtml_image_preview_plugin("tar.bz2", 24)
+
+
 def test_danish_characters():
-    template_path = "tests/danske_tegn_fejl.html"
-    fields = {'afsender_adresse': 'Blåbærgrød',
+    template_path = "plugins/tests/danske_tegn_fejl.html"
+    fields = {'afsender_adresse': u'Blåbærgrød',
             'date': '13-03-33', 'count': '42'}
-    output_path = 'tests/pdf1a_output.pdf'
+    output_path = 'plugins/tests/pdf1a_output.pdf'
     test_plugin(XHTMLPlugin(), template_path, fields, output_path, as_pdf=True)
 
 if __name__ == '__main__':
 
-    #test_plugin_defs()
-    test_odf_plugin()
-    #test_xhtml_plugin()
-    #test_danish_characters()
-    #test_list_plugins()
+    test_plugin_defs()
+    #test_odf_plugin()
+    test_xhtml_plugin()
+    test_danish_characters()
+    test_list_plugins()
+    test_xhtml_image_preview_plugin()
+    test_xsl_fo_generation()
+    test_xhtml_plugin_with_fo_file()

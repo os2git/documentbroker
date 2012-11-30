@@ -62,6 +62,67 @@ def xhtml2pdf_fop(xhtml, pdf_file):
     p.stdin.close()
 
 
+def fo2pdf_fop(xsl_fo, pdf_file):
+    """Converts XSL-FO input to PDF, using Apache/FOP."""
+    # Various arg definitions
+    executable = "fop"
+    config = "-c"
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "fop.xconf")
+    accessibility = "-a"
+    xml = "-fo"
+    infile = "-"
+    """
+    xslt = "-xsl"
+    xslt_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+            "xslt_default.xsl")
+    """
+    pdf = "-pdf"
+    output_file = pdf_file
+    pdfprofile = "-pdfprofile"
+    pdf_a_1a = "PDF/A-1a"
+    """
+    args = [executable, config, config_file, accessibility, xml, infile, xslt,
+            xslt_file, pdf, output_file, pdfprofile, pdf_a_1a]
+    """
+    args = [executable, config, config_file, accessibility, xml, infile,
+            pdf, output_file, pdfprofile, pdf_a_1a]
+    p = subprocess.Popen(args, stdin=subprocess.PIPE)
+    """
+    xhtml = xsl_fo.decode('utf8')
+    xhtml = xsl_fo.encode('utf8')
+    p.stdin.write(xhtml)
+    """
+    p.stdin.write(xsl_fo)
+    p.communicate()
+    p.stdin.close()
+
+
+def xhtml2xsl_fo_fop(xhtml, fo_file):
+    """Converts XHTML input to XSL-FO, using Apache/FOP."""
+    # Various arg definitions
+    executable = "fop"
+    config = "-c"
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "fop.xconf")
+    accessibility = "-a"
+    xml = "-xml"
+    infile = "-"
+    xslt = "-xsl"
+    xslt_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+            "xslt_default.xsl")
+    fo = "-foout"
+    output_file = fo_file
+    args = [executable, config, config_file, accessibility, xml, infile, xslt,
+            xslt_file, fo, output_file]
+    p = subprocess.Popen(args, stdin=subprocess.PIPE)
+    #p.stdin.write(xhtml.decode("UTF-8").encode("UTF-8"))
+    xhtml = xhtml.decode('utf8')
+    xhtml = xhtml.encode('utf8')
+    p.stdin.write(xhtml)
+    p.communicate()
+    p.stdin.close()
+
 # Change this to FOP when testing. At a later stage, abolish PISA or switch in
 # configuration.
 PDF_METHOD = PISA

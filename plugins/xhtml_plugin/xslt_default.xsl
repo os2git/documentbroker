@@ -709,6 +709,12 @@ The style will furthermore be used together with the Apache FOP renderer.
         <xsl:when test="@class = 'page_break'">
           <fo:block page-break-before="always" role="Div" />
         </xsl:when>
+        <xsl:when test="@class = 'page_number'">
+          <fo:page-number />
+        </xsl:when>
+        <xsl:when test="@class = 'absolute_position'">
+          <fo:block-container absolute-position="absolute"><xsl:call-template name="process-common-attributes-and-children"/></fo:block-container>
+        </xsl:when>
         <xsl:when test="@class = 'center_figure_in_parent'">
           <fo:table table-layout="fixed" width="100%" writing-mode="lr-tb" role="Table">
             <fo:table-column column-width="proportional-column-width(1)"/>

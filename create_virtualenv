@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 # Installs the virtual environment and the necessary Python packages
 # needed for running the document broker web service.
 # ALWAYS RUN IN DIRECTORY ROOT AFTER CHECKING OUT FROM GIT!
@@ -16,13 +16,13 @@ source bin/activate
 
 # create softlinks
 cd document_broker
-ln -s ../client 
-ln -s ../plugins
+ln -s ../client &> /dev/null
+ln -s ../plugins &> /dev/null
 
 cd ..
 cd document_templates
-ln -s ../client
-ln -s ../plugins
+ln -s ../client &> /dev/null
+ln -s ../plugins &> /dev/null
 cd ..
 
 # Install Django and additional packages
@@ -44,6 +44,7 @@ pip install pisa
 pip install reportlab
 pip install html5lib
 pip install pil
+pip install django-tastypie
 
 # Photologue - note, PIL MUST be reinstalled using the instructions in this
 # post: http://ubuntuforums.org/showpost.php?p=10804763&postcount=2 if

@@ -1,0 +1,133 @@
+In the following, we assume that you wish to set up the document broker and the
+template system as two distinct services on the same server. It is also
+possible and in some configurations recommended to install them on different
+servers.
+
+The contents of this file have in part been deprecated by the install script
+"install.sh" which should be used to create a simple working setup. This file
+documents the process in more detail and may offer guidance if a more manual or
+specialized setup is required.
+
+REQUIREMENTS
+============
+
+In order to proceed, the following Debian packages or their equivalents in
+other operating systems MUST be installed on your system:
+
+    postgresql
+    python-virtualenv
+    postgresql-server-dev-all
+    python-dev
+    apache2
+    libapache2-mod-wsgi
+    git
+
+For PDF support:
+    fop 
+
+For ODF/lpOD support:
+    libxml2-dev
+    libxslt-dev
+
+For SSL encryption/authentication with own CA:
+    openssl
+
+If using the built-in Photologue image storage in the template server, these
+packages are also necessary:
+
+    libjpeg8
+    libjpeg8-dev
+
+Please note that after installation you MUST ensure that the Python Imaging
+Library is compiled with JPEG support. See this forum article for details:
+
+http://ubuntuforums.org/showpost.php?p=10804763&postcount=2
+
+
+INSTRUCTIONS
+============
+
+Download and unpack the latest version of the project from here:
+
+https://svn.softwareborsen.dk/DokumentBroker/releases/
+
+Place the unpacked files to a your prefered directory on the server - e.g.
+/home/document_broker/
+
+After unpacking, cd into this directory and execute the command
+
+./create_virtualenv
+
+This will create the virtual Python environment and install Django and all
+necessary Python packages. 
+
+Next, to set up the Apache server, copy or soft link the sample 
+configuration file into the Apache sites dir:
+
+cd /etc/apache2/sites-available
+sudo cp <path-to-installation>/document_broker/etc/document_broker.apache.conf ./document_broker
+sudo cp <path-to-installation>/document_templates/etc/document_templates.apache.conf ./document_templates
+
+Also create log files:
+
+sudo touch /var/log/document_broker/templates/error.log
+sudo touch /var/log/document_broker/broker/error.log
+sudo chown apache /var/log/document_broker/templates/error.log
+sudo chown apache /var/log/document_broker/broker/error.log
+
+
+NOTE: The Apache configuration files currently contain hard coded paths etc.
+which may not correspond to the realities of your site. It is necessary to
+update these accordingly for the setup to work.
+
+Once you have ensured the paths are correct, you may execute 
+
+sudo a2ensite document_broker
+sudo a2ensite document_templates
+
+to enable the sites and
+
+sudo /etc/init.d/apache2 restart 
+
+to enable the service.
+
+
+DATABASE INSTRUCTIONS
+=====================
+
+(For document_broker - modify and repeat for the template system.)
+
+Set up the database server of your choice and fix the DB settings in
+<path-to-installation>/document_broker/document_broker accordingly.
+
+By default, the document broker installation is set up to use SQLite with a
+default SQLite path. In that case, no further setup is needed. SQLite is not
+recommended for production sites but are quite handy for testing.
+
+To create a PostgreSQL database (recommended), do:
+
+    ~/>sudo su - postgres
+
+    postgres=# createdb document_broker
+    postgres=# createuser document_broker
+    postgres=# psql -c "grant all on database document_broker to document_broker" 
+
+Navigate to <path-to-installation>/document_broker and execute the command
+
+python manage.py syncdb
+
+You can now start setting up the metadata through the admin system.
+
+
+
+WEB ACCESS TO THE BROKER AND TEMPLATES
+======================================
+
+Access the templates broker admin site via:
+http://<server domain>/document_broker/admin/
+
+Access the templates admin site via:
+http://<server domain>:8000/document_templates/admin/
+
+Access the demo site via:
+http://<server domain>/document_broker/demo/

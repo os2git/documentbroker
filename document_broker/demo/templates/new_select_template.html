@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="page-wrapper">  
+    <div id="view-wrapper">
+        <img id="preview-img" src="{{ broker_url }}/media/files/styling/trans.gif"/>
+    </div>
+    <div id="content-wrapper">      
+        <h2>Dokument-broker</h2>
+        <p>
+            Denne side indeholder en prototype af Magenta Aps' <i>Dokument-broker</i>, som
+            kan samle al viden om generering af dokumenter på en kontorarbejdsplads på ét
+            sted. Det har den virkning, at fagsystemerne ikke skal forholde sig til 
+            forskellige versioner af diverse kontorprogrammer, men kan koncentrere sig om
+            det forretningsmæssige og uddelegere ansvaret for formattering af dokumenter
+            til brokeren.
+        </p>
+        <p>
+            Dokument-brokeren vil hermed også gøre det lettere at udskifte eller opgradere
+            et kontorprogram, fordi opgraderingen kun behøver at foregå ét sted.
+        </p>
+        <p>
+            Herunder finder du en liste af skabeloner, som du kan forestille dig er til
+            rådighed for et givet fagsystem. Hvis du vælger en skabelon og trykker på
+            knappen, vil du blive ført igennem de få og enkle skridt, der ligger i at
+            generere et dokument med dokument-brokeren.
+        </p>
+        
+        <hr/>
+        <form method="POST" action="." name="templateform">
+            {% csrf_token %}
+            <input name="templatechoice" id="id_templatechoice" type="hidden" value=""/>
+        </form>
+        <h3>Vælg en template ved at klikke på en miniature</h3>
+        <table cellspacing="0" cellpadding="0" border="0" id="temp-grid">
+            {% for name, uuid, file, pdf, thumb, thumb_file in templates %}
+            {% if forloop.counter0|divisibleby:2 %}
+            <tr>
+            {% endif %}
+                <td id="{{ uuid }}">
+                    {% ifequal thumb_file "" %}
+                    <img class="tb" src="{{ broker_url }}/media/files/styling/dummy-temp.png" alt=""/>
+                    {% else %}
+                    <img class="tb" src="{{ thumb_file }}" alt="" width="175" />
+                    {% endifequal %}
+                    <br /><button>{{ name }}</button>
+                </td>
+            {% if forloop.counter0|divisibleby:2 %}
+            {% else %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    <br style="clear:both;"/>
+</div>
+{% endblock %}

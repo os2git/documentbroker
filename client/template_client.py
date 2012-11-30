@@ -18,26 +18,24 @@ The main section is a simple test program. TODO: As is the case for the
 document broker client, the main section should be expanded to include a
 command line client for convenient debugging."""
 
-import xmlrpclib
-
 import document_broker_settings as settings
 
+from client_lib import XMLRPCProxy
 
-class TemplateServer:
 
-    def __init__(self, url, verbose=False):
-        # For now, don't try/catch - just pass on
-        # any exception that might occur in the transport
-        # layer. We can improve that later, if need be.
-        # TODO: Introduce user authentication.
-        self._url = url
-        self._rpc_srv = xmlrpclib.ServerProxy(self._url, verbose=verbose)
+class TemplateServer(XMLRPCProxy):
+
+    def get_template(self, client_system_id, template_id):
+        return self._rpc_srv.get_template(client_system_id, template_id)
 
     def get_templates(self, client_system_id):
         return self._rpc_srv.get_templates(client_system_id)
 
     def get_template_fields(self, template_id):
         return self._rpc_srv.get_template_fields(template_id)
+
+    def get_thumbnail_image(self, template_id):
+        return self._rpc_srv.get_thumbnail_image(template_id)
 
 
 if __name__ == '__main__':
@@ -51,14 +49,14 @@ if __name__ == '__main__':
     try:
         client_id = '553b6807-851d-4b76-a4c1-3f683fc20de3'
         templates = template_server.get_templates(client_id)
-
         f = lambda x, y, z: "Navn: {0}, ID: {1}, URL: {2}".format(x, y, z)
-
-        for (n, i, u) in templates:
+        # Template tuple = name, id, url, do_pdf
+        for (n, i, u, d) in templates:
             print f(n, i, u)
-        _, uuid, _ = templates[0]
+        _, uuid, _, _ = templates[0]
         print uuid
         fields = template_server.get_template_fields(uuid)
         print fields
     except Exception as e:
         print "An error has occurred: " + str(e)
+        raise

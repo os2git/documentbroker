@@ -1,7 +1,9 @@
 include create_virtualenv
+include install.sh
 include COPYING
 include INSTALL
 include VERSION
+include NEWS
 recursive-include document_broker *
 recursive-include document_templates *
 recursive-include research *

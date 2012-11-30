@@ -43,6 +43,7 @@ def pep8_test(filepath):
         pep8.process_options(arglist)
         pep8.input_dir(filepath)
         output = pep8.get_statistics()
+        print "PEP8 OUTPUT: " + str(output)
         self.assertEqual(len(output), 0)
 
     return do_test

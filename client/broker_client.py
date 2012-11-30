@@ -29,20 +29,14 @@ import datetime
 
 import document_broker_settings as settings
 
+from client_lib import XMLRPCProxy
 from template_client import TemplateServer
 
 
-class DocumentBroker:
+class DocumentBroker(XMLRPCProxy):
     """This implements the XML-RPC interface of the document broker to be used
     by client libraries. It contains the full API with all the methods needed
     by user systems - except those which are found on the template server."""
-
-    def __init__(self, url, verbose=False):
-        # Don't try/catch - just pass on
-        # any exception that might occur in the transport
-        # layer. We can improve that later, if need be.
-        self._url = url
-        self._rpc_srv = xmlrpclib.ServerProxy(self._url, verbose=verbose)
 
     def get_plugin_mappings(self):
         return self._rpc_srv.get_plugin_mappings()
@@ -65,7 +59,7 @@ class DocumentBroker:
 (ODF, PDF) = (0, 1)
 
 
-def test(verbose=True, type=PDF):
+def test(verbose=True, type=ODF):
 
     def say(s):
         if verbose:
