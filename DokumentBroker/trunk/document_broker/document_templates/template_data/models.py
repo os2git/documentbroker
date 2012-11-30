@@ -14,10 +14,12 @@
 # WITHOUT ANY WARRANTY; without even the implied warranties of
 # MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR
 # PURPOSE.  See the Mozilla Public License for more details.
+
 import os
 import uuid
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.db.models import permalink
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -25,8 +27,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from client.broker_client import DocumentBroker
-from client.document_broker_settings import BROKER_URL
+from client import document_broker_settings
 from plugins import PluginManager
+import xmlrpclib
+import urllib
+import threading
 
 
 class ClientSystem(models.Model):
@@ -40,6 +45,170 @@ class ClientSystem(models.Model):
 
     def __unicode__(self):
         return ', '.join([self.name, self.client])
+
+
+class BrokerServer:
+    """
+    This is meant for the template server to perform operations on the broker.
+    At the moment only generate_template_image, generate_fo_template and
+    acknowledge_document
+    """
+
+    def __init__(self, url, verbose=False):
+        # For now, don't try/catch - just pass on
+        # any exception that might occur in the transport
+        # layer. We can improve that later, if need be.
+        # TODO: Introduce user authentication.
+        self._url = url
+        self._rpc_srv = xmlrpclib.ServerProxy(self._url, verbose=verbose)
+        # This is for development purpose. authorization should be carried
+        # out otherwise in production.
+        self._authorization = self._rpc_srv.get_authorization(
+            document_broker_settings.CLIENT_ID,
+            document_broker_settings.CLIENT_PASSWORD
+        )
+
+    def get_plugin_mappings(self):
+        return self._rpc_srv.get_plugin_mappings()
+
+    def generate_fo_template(self, template_id, fo_file_path):
+        return self._rpc_srv.generate_fo_template(self._authorization,
+                template_id, fo_file_path)
+
+    def generate_template_image(self, template_id, resolusion, image_type,
+            file_path):
+        return self._rpc_srv.generate_template_image(self._authorization,
+                template_id, resolusion, image_type, file_path)
+
+    def acknowledge_document(self, document):
+        return self._rpc_srv.acknowledge_document(self._authorization,
+                document)
+
+
+_bs = None
+
+
+def set_broker_server(bs):
+    """
+    We make an instance of the broker server globally available.
+    """
+    global _bs
+    _bs = bs
+
+
+def get_broker_server():
+    return _bs
+
+
+class create_supporting_files(threading.Thread):
+    _fo_file_path = None
+    _file_path = None
+    _uuid = None
+
+    def addData(self, uuid, file_path, fo_file_path):
+        self._fo_file_path = fo_file_path
+        self._file_path = file_path
+        self._uuid = uuid
+
+    def run(self):
+        print "THREAD RUNNING"
+        """
+        This method is called when a template is saved.
+        We create the fo file and the image files here.
+        """
+        bs = get_broker_server()
+        (_, extension) = os.path.splitext(self._file_path)
+        extension = extension.strip('.').upper()
+        if (
+                extension == "HTML"
+                or extension == "XHTML"
+                or extension == "HTM"
+                and self.do_output_pdf
+        ):
+            """ We generate an XSL-FO template """
+            (fo_url, hash) = bs.generate_fo_template(
+                    self._uuid, self._fo_file_path)
+            try:
+                """ We fetch and save the file """
+                fo_handle = urllib.urlopen(fo_url)
+                fo_data = fo_handle.read()
+                fo_handle.close
+            except Exception as e:
+                print "An error ocurred while reading the FO file: " + str(e)
+            try:
+                with open(os.path.join(
+                    settings.MEDIA_ROOT, self._fo_file_path
+                ), 'w') as fo_out:
+                    fo_out.write(str(fo_data))
+                fo_out.close
+            except Exception as e:
+                print "An error ocurred while saving the FO file: " + str(e)
+            """ check the hash sum """
+            # TODO: do the check
+            """ And finally we acknowledge the file on the broker. """
+            bs.acknowledge_document(self._fo_file_path[
+                self._fo_file_path.rfind('/'):])
+
+            """
+            We generate a thumbnail image and an example image for the
+            new xhtml file and name them alike.
+            """
+            (ex_url, hash) = bs.generate_template_image(self._uuid,
+                settings.TEMPLATE_EXAMPLE_RESOLUSION,
+                "example", self._file_path
+            )
+            try:
+                """ We fetch and save the file """
+                ex_handle = urllib.urlopen(ex_url)
+                ex_data = ex_handle.read()
+                ex_handle.close
+            except Exception as e:
+                print "An error ocurred while reading the EX file: " + str(e)
+            ex_file_path = "files" + ex_url[ex_url.rfind('/'):]
+            try:
+                with open(os.path.join(
+                    settings.MEDIA_ROOT, ex_file_path
+                ), 'w') as ex_out:
+                    ex_out.write(str(ex_data))
+                ex_out.close
+            except Exception as e:
+                print "An error ocurred while saving the EX file: " + str(e)
+            """ check the hash sum """
+            # TODO: do the check
+            """ And finally we acknowledge the file on the broker. """
+            bs.acknowledge_document(ex_file_path[ex_file_path.rfind('/'):])
+
+            (th_url, hash) = bs.generate_template_image(self._uuid,
+                settings.THUMBNAIL_RESOLUSION,
+                "thumbnail", self._file_path
+            )
+            try:
+                """ We fetch and save the file """
+                th_handle = urllib.urlopen(th_url)
+                th_data = th_handle.read()
+                th_handle.close
+            except Exception as e:
+                print "An error ocurred while reading the TH file: " + str(e)
+            th_file_path = "files" + th_url[th_url.rfind('/'):]
+            try:
+                with open(os.path.join(
+                    settings.MEDIA_ROOT, th_file_path
+                ), 'w') as th_out:
+                    th_out.write(str(th_data))
+                th_out.close
+            except Exception as e:
+                print "An error ocurred while saving the TH file: " + str(e)
+                """ check the hash sum """
+            # TODO: do the check
+            """ And finally we acknowledge the file on the broker. """
+            bs.acknowledge_document(th_file_path[th_file_path.rfind('/'):])
+
+
+def sup_files_in_thread(sender, instance, created, **kwargs):
+    t = create_supporting_files()
+    tmp_file = instance.file.path[(instance.file.path.rfind('/') + 1):]
+    t.addData(instance.uuid, tmp_file, instance.precompiled_file)
+    t.start()
 
 
 class Template(models.Model):
@@ -79,15 +248,55 @@ class Template(models.Model):
 
     file = models.FileField(_('File'), upload_to='files')
 
+    precompiled_file = models.CharField(_('precompiled_file'), max_length=255)
+
     def _get_url(self):
         return self.file.url
     url = property(_get_url)
 
     def save(self, *args, **kwargs):
-
+        fo_file_path = ""
+        bs = BrokerServer(document_broker_settings.BROKER_URL)
+        set_broker_server(bs)
         # Before save
         if self.file != self._old_file:
             self.version = self.version + 1
+            """
+            Couldn't make the commit keyword work on the save method.
+            pre_save=super(Template, self).save(commit=False, *args, **kwargs)
+            Except: save() got an unexpected keyword argument 'commit'
+
+            This is a dirty way to find the next file:
+            """
+            found = True
+            i = 0
+            while found:
+                """
+                We traverse the files with this name and set the fo output
+                file to be the next one in the row.
+                """
+                wo_ext = str(self.file.name)[:str(self.file.name).rfind(".")]
+                ext = str(self.file.name)[str(self.file.name).rfind("."):]
+                if i == 0:
+                    file_name = "files/"
+                    file_name += wo_ext
+                else:
+                    file_name += wo_ext
+                    file_name += "_" + str(i)
+                try:
+                    the_file = os.path.join(
+                        settings.MEDIA_ROOT,
+                        file_name + ext
+                    )
+                    with open(the_file, 'r') as f:
+                        file_name = "files/"
+                        found = True
+                except Exception as e:
+                    fo_file_path = file_name + ".fo"
+                    found = False
+                i += 1
+            self.precompiled_file = fo_file_path
+            plugin_mappings = bs.get_plugin_mappings()
         # Actual save
         super(Template, self).save(*args, **kwargs)
         # After save - extract field if file changed.
@@ -95,10 +304,15 @@ class Template(models.Model):
             # Get plugin name from mapping
             (_, extension) = os.path.splitext(self.file.path)
             extension = extension.strip('.').upper()
-            db = DocumentBroker(BROKER_URL)
+            db = DocumentBroker(document_broker_settings.BROKER_URL)
             plugin_mappings = db.get_plugin_mappings()
             plugin = PluginManager.get_plugin(plugin_mappings[extension])
             fields = plugin.extract_document_fields(str(self.file.path))
+        # Actual save
+        super(Template, self).save(*args, **kwargs)
+        print "SAVED SAVED SAVED SAVED"
+        # After save - extract field if file changed.
+        if self.file != self._old_file:
             existing_fields = Field.objects.filter(document=self)
 
             for name, content_type in fields:
@@ -106,6 +320,9 @@ class Template(models.Model):
                     Field.objects.create(
                         name=name, type="TEXT",
                         content_type="string", document=self)
+
+
+post_save.connect(sup_files_in_thread, sender=Template)
 
 
 class Field(models.Model):

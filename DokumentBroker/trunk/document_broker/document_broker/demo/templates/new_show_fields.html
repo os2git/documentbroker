@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="page-wrapper">  
+    <div id="view-wrapper">
+        <img id="preview-img" src="{{ image }}"/>
+    </div>
+    <div id="content-wrapper">      
+        <h2>Dokument-broker</h2>
+        <h3>Udfyld skabelonens felter</h3>
+        <form id="fields_form" method="POST" action="." name="submitform">
+            <input type="hidden" name="preview_format" id="id_preview_format" />
+            {% csrf_token %}
+            <p>
+            {% for field in feilds %}
+            <label for="id_document_field_{{ forloop.counter0 }}">{{ field }}:</label><input name="document_field_{{ forloop.counter0 }}" id="id_document_field_{{ forloop.counter0 }}" type="text" />
+            {% endfor %}
+            <br style="clear:both;"/>
+            <ul class="foldud">
+                <li>Preview
+                    <ul>                    	
+                        <li id="png"><img src="{{ broker_url }}media/files/styling/png.png" alt=""/>.png-billede</li>
+                        <li id="html"><img src="{{ broker_url }}media/files/styling/pnghtml.png" alt=""/>.png i html-fil</li>
+                        <li id="tar"><img src="{{ broker_url }}media/files/styling/archive.png" alt=""/>.tar-arkiv</li>
+                        <li id="tar.gz"><img src="{{ broker_url }}media/files/styling/archive.png" alt=""/>.tar.gz-arkiv</li>
+                        <li id="tar.bz2"><img src="{{ broker_url }}media/files/styling/archive.png" alt=""/>.tar.bz2-arkiv</li>
+                        <li id="zip"><img src="{{ broker_url }}media/files/styling/archive.png" alt=""/>.zip-arkiv</li>
+                    </ul>
+                </li>
+            </ul>
+          <button class="genpdf">Generér PDF</button>
+        </form>
+    </div>
+    <br style="clear:both;"/>
+</div>
+{% endblock %}

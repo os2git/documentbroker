@@ -1,0 +1,32 @@
+This directory and the files contained therein are part of the Magenta Document
+Broker. For licensing, please refer to the COPYING and README files in the root
+directory.
+
+This directory will contain scripts and documentation for setting up a CA to
+issue and require client side SSL certificates from user systems.
+
+The scripting and general OpenSSL setup is based on the HOWTO guide on this
+page:
+
+http://it.toolbox.com/blogs/securitymonkey/howto-securing-a-website-with-client-ssl-certificates-11500
+
+In short, each Document Broker server will implement a Certificate Authority
+which will 
+
+a) issue server-side certificates for the broker and template server components
+b) issue client-side certificates for user systems and possibly for admin
+   users.
+
+All these scripts must be run as the root user. The scripts are, briefly:
+
+* new_ca.sh. This will create a new CA root certificate. WARNING: Should be run
+  only once! If rerun, it will generate a new root certificate and invalidate
+  all derived certificates.
+* new_apache_server.sh. This will generate a new server-side certificate and
+  sign it with the CA certificate. Note on usage: Give the server name as
+  stated in the Apache configuration's ServerName directive as first parameter.
+  Also, the ServerName MUST be entered as the certificate's common_name.
+* new_user.sh. TBW.
+
+
+

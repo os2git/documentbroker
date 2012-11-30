@@ -16,10 +16,20 @@
 # PURPOSE.  See the Mozilla Public License for more details.
 
 from django.conf.urls import patterns, include, url
+from tastypie.api import Api
+from rest_api import api as rest_api
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+api_test = Api(api_name='test')
+api_test.register(rest_api.GenerateDocumentResource())
+api_test.register(rest_api.ClientSystemsResource())
+api_test.register(rest_api.AuthorizationResource())
+api_test.register(rest_api.PluginMappingsResource())
+api_test.register(rest_api.AcknowledgeDocumentResource())
+api_test.register(rest_api.PreviewResource())
 
 urlpatterns = patterns(
     '',
@@ -36,5 +46,8 @@ urlpatterns = patterns(
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^broker-xml/$', 'django_xmlrpc.views.handle_xmlrpc')
+    url(r'^broker-xml/$', 'django_xmlrpc.views.handle_xmlrpc'),
+    # REST examples:
+    (r'^rest_api/', include(api_test.urls)
+    )
 )

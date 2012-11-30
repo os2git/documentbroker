@@ -16,4 +16,6 @@
 # PURPOSE.  See the Mozilla Public License for more details.
 
 from xhtml_utils import xhtml2pdf as get_xhtml2pdf
+from xhtml_utils import xhtml2xsl_fo_fop as get_fo
+from xhtml_utils import fo2pdf_fop as fo2pdf
 from xhtml_utils import FOP, PISA

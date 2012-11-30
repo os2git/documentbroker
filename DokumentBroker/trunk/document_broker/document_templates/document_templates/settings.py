@@ -25,22 +25,26 @@ TEMPLATE_DEBUG = DEBUG
 
 
 INSTALL_DIR = get_install_dir()
+ROOT_DIR = os.path.abspath(os.path.join(INSTALL_DIR, '..'))
 CUSTOM_TEMPLATES = os.path.join(INSTALL_DIR, 'django_templates')
 
 ADMINS = (
-    ('Carsten Agger', 'carstena@magenta-aps.dk'),
+    #    TODO:  Please fill out this.
+    #    ('Your Name', 'your_email@your_domain.tld'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'document_templates',
-        'USER': 'document_templates',
-        'PASSWORD': 'document_templates',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(ROOT_DIR, '.db/templates_database')
+        #_'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        #'NAME': 'document_templates',
+        #'USER': 'document_templates',
+        #'PASSWORD': 'document_templates',
+        #'HOST': '',
+        #'PORT': '',
     }
 }
 
@@ -73,6 +77,14 @@ USE_TZ = True
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(INSTALL_DIR, 'site-media')
+
+# This variable defines the resolusion to be used when producing thumbnail
+# images for templates. It is defined in dpi and defaults to 32 dpi.
+THUMBNAIL_RESOLUSION = 32
+
+# This variable defines the resolusion to be used when producing example images
+# of templates. It is defined in dpi and defaults to 72 dpi.
+TEMPLATE_EXAMPLE_RESOLUSION = 72
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -113,12 +125,15 @@ TEMPLATE_LOADERS = (
     #'django.template.loaders.eggs.Loader',
 )
 
+SSL_AUTHENTICATION = False
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'template_data.middleware.ThreadLocals',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -161,10 +176,12 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 XMLRPC_METHODS = (
     # List methods to be exposed in the form (<method path>, <xml-rpc name>,)
+    ('template_data.views.get_template', 'get_template'),
     ('template_data.views.get_templates', 'get_templates'),
     ('template_data.views.get_template_url', 'get_template_url'),
     ('template_data.views.get_template_fields', 'get_template_fields'),
-
+    ('template_data.views.get_thumbnail_image', 'get_thumbnail_image'),
+    ('template_data.views.get_example_image', 'get_example_image'),
 )
 
 # A sample logging configuration. The only tangible logging

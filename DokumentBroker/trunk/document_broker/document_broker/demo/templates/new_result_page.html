@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% if redirect %}
+<meta http-equiv="REFRESH" content="5;url=/document_broker/demo/">
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div id="page-wrapper">  
+    <div id="view-wrapper">
+        <img id="preview-img" src="media/files/styling/trans.gif"/>
+    </div>
+    <div id="content-wrapper">      
+        <h2>Dokument-broker</h2>
+        <h3>Genereret dokument</h3>
+
+		<p>Dokumentet er klar til <a href="{{ url }}">download her</a>
+        <br/>
+        SHA1-sum: {{sha1sum}}</p>
+
+        <form method="POST" action="." name="finishform">
+            <input type="hidden" name="command" id="id_command" />
+            <input type="hidden" name="sha1sum" value="{{sha1sum}}"/>
+            <input type="hidden" name="result_url" value="{{ url }}"/>
+            {% csrf_token %}
+            <input class="checksum" type="button" name="sha1" id="id_sha1" value="Check SHA1-sum"/><input class="okdownload" type="submit" name="ack" id="id_ack" value="Kvitter og slet"/>
+        </form>
+        {% if status %}
+        <p><em>{{ status }}</em></p>
+        {% else %}
+        <p><em>Bemærk: Dokumentet slettes fra serveren, så snart der trykkes på "kvitter og slet".</em></p>
+        {% endif %}
+    </div>
+    <br style="clear:both;"/>
+</div>
+<!--
+<h2>Genereret dokument:</h2>
+
+<table style="text-align: left" cellspacing="4">
+    <tr>
+        <th> Dokument</th>
+        <td>
+            <a href="{{ url }}">Klik her</a>
+        </td>
+    </tr>
+    <tr>
+        <th>SHA1-sum:</th> 
+        <td> {{sha1sum}}</td>
+    </tr>
+</table>
+
+<form method="POST" action=".">
+    <p>
+    {% csrf_token %}
+    <table style="text-align: left">
+        {{ form }}
+    </table>
+    </p>
+    <p>
+    <input type="hidden" name="result_url" value="{{ url }}">
+    <input type="hidden" name="sha1sum" value="{{ sha1sum }}">
+    <input type=submit>
+    </p>
+</form>
+-->
+
+{% endblock %}
+
+

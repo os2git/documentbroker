@@ -33,6 +33,13 @@ def get_templates():
     return [(t[1], t[0]) for t in templates]
 
 
+def get_all_template_data():
+    """Get all template data available for the configured client system."""
+    ts = TemplateServer(TEMPLATE_URL)
+    ts.get_templates(CLIENT_ID)
+    return ts.get_templates(CLIENT_ID)
+
+
 def get_template_fields(template):
     """Get the fields available for the chosen template."""
     ts = TemplateServer(TEMPLATE_URL)
@@ -44,6 +51,20 @@ def generate_document(template, fields):
     db = DocumentBroker(BROKER_URL)
     user_authentication = db.get_authorization(CLIENT_ID, CLIENT_PASSWORD)
     return db.generate_document(user_authentication, template, fields)
+
+
+def generate_preview(template, fields, return_format, resolusion):
+    """Generate a document from a template."""
+    db = DocumentBroker(BROKER_URL)
+    user_authentication = db.get_authorization(CLIENT_ID, CLIENT_PASSWORD)
+    return db.generate_preview(user_authentication, template, fields,
+            return_format, resolusion)
+
+
+def get_thumbnail_image(template):
+    """Get the thumbnail images if one exists otherwiser return None"""
+    ts = TemplateServer(TEMPLATE_URL)
+    return ts.get_thumbnail_image(template)
 
 
 def acknowledge_document(url):

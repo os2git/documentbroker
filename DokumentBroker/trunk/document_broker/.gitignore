@@ -21,11 +21,20 @@ lib/python2.7
 .libreoffice/
 .pyhistory
 .subversion
+document_broker/client
+document_broker/plugins
+document_templates/client
+document_templates/plugins
 
 # Ignore swap and binary Python files
 #
 *.swp
 *.pyc
+
+# Ignore certificates and keys
+*.crt
+*.key
+.rnd
 
 # Ignore files in site-media folders.
 
@@ -34,3 +43,7 @@ site-media
 # Ignore log files
 
 logs
+
+# Ignore SQLite DB files
+#
+.db/

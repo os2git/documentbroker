@@ -1,93 +1,135 @@
-In the following, we assume that you wish to set up the document broker and the
-template system as two distinct services on the same server. It is also
-possible and in some configurations recommended to install them on different
-servers.
+INSTALLATION GUIDE
+==================
 
-REQUIREMENTS
-============
+This document describes how to set up the document broker and template server
+as two different services on the same server, on the same domain or possibly on
+two different domains.
 
-In order to proceed, the following Debian packages or their equivalents in
-other operating systems MUST be installed on your system:
+The main installation program is called "install.sh".
 
-    postgresql
-    python-virtualenv
-    postgresql-server-dev-all
-    python-dev
-    apache2
-    libapache2-mod-wsgi
+NOTE: This installation program will only work on Debian-like systems and has
+only been tested on Ubuntu 12.04 server. It should be able to run on all
+systems that support networking and Python, but the installation process will
+be more manual. Refer to the INSTALL.manual file for more information about the
+setup.
 
-For PDF support:
-    fop 
+NOTE: Since the template system will by default listen on port 8000, the Apache
+server MUST be set up to listen on this port in order for the template server
+to work. This means that something like these two lines must be present in
+/etc/apache2/ports.conf:
 
-For ODF/lpOD support:
-    libxml2-dev
-    libxslt-dev
-
-If using the built-in Photologue image storage in the template server, these
-packages are also necessary:
-
-    libjpeg8
-    libjpeg8-dev
-
-Please note that after installation you MUST ensure that the Python Imaging
-Library is compiled with JPEG support. See this forum article for details:
-
-http://ubuntuforums.org/showpost.php?p=10804763&postcount=2
+    NameVirtualHost *:8000
+    Listen 8000
 
 
-INSTRUCTIONS
-============
+In order to access the site, the port 8000 will also have to be open on the
+server's firewall as well as your own. Alternatively, a proxy may be set up to
+redirect from the standard port 80, but that is beyond the scope of this
+manual.
 
-After unpacking or cloning from a git repository, cd into 
-this directory and execute the command
+DOWNLOAD AND UNPACK
++++++++++++++++++++
 
-./create_virtualenv
+To start installation, you must first get hold of the source distribution.
 
-This will create the virtual Python environment and install Django and all
-necessary Python packages. 
+You may, e.g., download and unpack the latest version from here:
 
-Next, to set up the Apache server, soft link the sample configuration file into
-the Apache sites dir:
-
-cd /etc/apache2/sites-available
-sudo ln -s <path-to-installation>/document_broker/etc/document_broker.apache.conf ./document_broker
-sudo ln -s
-<path-to-installation>/document_templates/etc/document_templates.apache.conf ./document_templates
-
-NOTE: The Apache configuration files currently contain hard coded paths etc.
-which may not correspond to the realities of your site. 
-
-Once you have ensured the paths are correct, you may execute 
-
-sudo a2ensite document_broker
-sudo a2ensite document_templates
-
-to enable the sites and
-
-sudo /etc/init.d/apache2 restart 
-
-to enable the service.
+    https://svn.softwareborsen.dk/DokumentBroker/releases/
 
 
-DATABASE INSTRUCTIONS
-=====================
+After downloading, unpack the distribution wherever you want to install the
+Document Broker. We suggest that the system is installed in such a way that
+the directory and files are not owned by root but (e.g.) by a dedicated user
+which could be called "document_broker" or "db".
 
-(For document_broker - modify and repeat for the template system.)
+Note that the install script requires sudo access. When root privileges are
+required, you will be prompted to enter your password.
 
-Set up the database server of your choice and fix the DB settings in
-<path-to-installation>/document_broker/document_broker accordingly.
 
-To create a PostgreSQL database (recommended), do:
+INSTALLATION
+++++++++++++
 
-    ~/>sudo su - postgres
+After unpacking, navigate to the directory where you have placed the
+distribution, e.g. /home/db/document_broker-0.1.3/ and call the install script:
 
-    postgres=# createdb document_broker
-    postgres=# createuser document_broker
-    postgres=# psql -c "grant all on database document_broker to document_broker" 
+    cd /home/db/document_broker-0.1.3
+    ./install.sh <broker-domain> [<template-domain>]
 
-Navigate to <path-to-installation>/document_broker and execute the command
+The parameter <broker-domain> is the full domain name on which you wish to
+locate the document broker but without the "www", e.g.
+"document-broker.magenta-aps.dk" (this is the default).
 
-python manage.py syncdb
+During the installation, you will be prompted a number of times, mainly to
+inform you what's happening and ask you to confirm.
 
-You can now start setting up the metadata through the admin system.
+NOTE: A working internet connection with access to Ubuntu/Debian repositories
+and Python packages (PyPI) is required for this script to work. If some
+repository specified in /etc/apt/sources.list or the Python Package Index is
+unavailable, this script will fail. In that case, please try again later.
+
+* If required packages are missing on your system, you will be informed that
+  they will be installed:
+
+      Some dependencies are missing. The following packages will be installed:
+      git postgresql-common
+      Press ENTER to continue, CTRL-C to abort.
+
+  Please wait while the missing packages are installed on your system. Enter
+  your password if prompted.
+
+* The installation script will now install the virtual environment in which the
+  document broker will run:
+
+      Setting up virtualenv. Press ENTER to continue, CTRL-C to abort.
+      This may take a while ...
+
+  This process will download and install a large number of Python packages, so 
+  please be patient and wait until the next prompt appears.
+
+* Next, the Apache setup will be generated and copied to your
+  /etc/apache2/sites-available:
+  
+      Setting up Apache ... press ENTER to continue, CTRL-C to abort.    
+
+  This will not take a lot of time. Note that if you have special requirements
+  regarding paths, domain names or ports, you will have to modify the Apache
+  setup files manually after the installation is complete.
+
+* You are now prompted to create the databases required:
+
+      Setup succeeded so far. Press ENTER to set up database, CTRL-C to abort.
+
+  You will be asked to create a super user for each database - please enter
+  suitable login details. 
+
+  NOTE: An SQLite database is now used by default. If you require a PostgreSQL
+  database, please change/uncomment the relevant settings in
+  document_broker/document_broker/settings.py and
+  document_templates/document_templates/settings.py and refer to the file
+  INSTALL.manual for instructions on setting up the PostgreSQL databases.
+
+* Installation is now done! Congratulations - the working URLs of your broker
+  and template sites are output to the terminal:
+
+      Installation complete and (as far as I can tell) successful.
+
+      Please verify component sites exist and can be accessed.
+
+      Access the templates broker admin site via:
+
+      http://aarhus.magenta-aps.dk/document_broker/admin/
+
+      Access the templates admin site via:
+      http://aarhus.magenta-aps.dk:8000/document_templates/admin/
+
+      Access the demo site via:
+      http://aarhus.magenta-aps.dk/document_broker/demo/
+
+
+During installation, output from apt-get and the Python installer is written to
+the file install_log.txt. If something goes wrong during installation, please
+refer to that log file and the terminal output to troubleshoot. You may also
+have to modify the default Apache configuration and/or check your firewall
+settings.
+
 
