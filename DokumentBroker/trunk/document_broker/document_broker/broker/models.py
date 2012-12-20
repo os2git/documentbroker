@@ -210,7 +210,7 @@ class DocumentBroker(object):
         output_url = settings.MEDIA_URL + 'files/' + output_file
         print "generate_template_image IS RUN"
         plugin.generate_template_image(tmp_name, output_path, resolusion,
-                image_type)
+                image_type, fields)
 
         # Calculate SHA1 hash of output file
         sha1 = hashlib.sha1()

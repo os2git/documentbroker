@@ -250,7 +250,7 @@ class GenerateDocumentResource(Resource):
         (self._url, self._hash_key) = generate_document(
             authentication,
             template_id,
-            field_data
+            field_data['items']
         )
         """ We create an object to hold our data """
         data_obj = ContainerObject()
@@ -654,7 +654,7 @@ class PreviewResource(Resource):
         (self._url, hash_key) = generate_preview(
             authentication,
             template_id,
-            field_data,
+            field_data['items'],
             return_format,
             resolusion
         )

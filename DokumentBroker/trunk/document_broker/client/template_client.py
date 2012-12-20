@@ -34,8 +34,14 @@ class TemplateServer(XMLRPCProxy):
     def get_template_fields(self, template_id):
         return self._rpc_srv.get_template_fields(template_id)
 
+    def get_template_fields_adv(self, template_id):
+        return self._rpc_srv.get_template_fields_adv(template_id)
+
     def get_thumbnail_image(self, template_id):
         return self._rpc_srv.get_thumbnail_image(template_id)
+
+    def get_example_image(self, template_id):
+        return self._rpc_srv.get_example_image(template_id)
 
 
 if __name__ == '__main__':

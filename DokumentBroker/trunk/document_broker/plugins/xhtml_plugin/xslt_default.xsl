@@ -142,7 +142,7 @@ The style will furthermore be used together with the Apache FOP renderer.
     <xsl:attribute name="writing-mode"><xsl:value-of select="$writing-mode"/></xsl:attribute>
     <xsl:attribute name="hyphenate"><xsl:value-of select="$hyphenate"/></xsl:attribute>
     <xsl:attribute name="text-align"><xsl:value-of select="$text-align"/></xsl:attribute>
-    <!--<xsl:attribute name="font-family">Free Serif</xsl:attribute>-->
+    <!--<xsl:attribute name="font-family">Liberation Serif</xsl:attribute>-->
     <!-- specified on fo:root to change the properties' initial values -->
   </xsl:attribute-set>
 
@@ -305,12 +305,12 @@ The style will furthermore be used together with the Apache FOP renderer.
 
   <xsl:param name="ul-label-1">&#x2022;</xsl:param>
   <xsl:attribute-set name="ul-label-1">
-    <xsl:attribute name="font">1em Free Serif</xsl:attribute>
+    <xsl:attribute name="font">1em Liberation Serif</xsl:attribute>
   </xsl:attribute-set>
 
   <xsl:param name="ul-label-2">o</xsl:param>
   <xsl:attribute-set name="ul-label-2">
-    <xsl:attribute name="font">0.67em Free Serif</xsl:attribute>
+    <xsl:attribute name="font">0.67em Liberation Serif</xsl:attribute>
     <xsl:attribute name="baseline-shift">0.25em</xsl:attribute>
   </xsl:attribute-set>
 
@@ -417,14 +417,14 @@ The style will furthermore be used together with the Apache FOP renderer.
   =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-->
 
   <xsl:attribute-set name="b">
-    <xsl:attribute name="font-weight">700</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
   </xsl:attribute-set>
   <xsl:attribute-set name="strong">
-    <xsl:attribute name="font-weight">700</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
   </xsl:attribute-set>
 
   <xsl:attribute-set name="strong-em">
-    <xsl:attribute name="font-weight">700</xsl:attribute>
+    <xsl:attribute name="font-weight">bold</xsl:attribute>
     <xsl:attribute name="font-style">italic</xsl:attribute>
   </xsl:attribute-set>
 
@@ -1035,6 +1035,22 @@ The style will furthermore be used together with the Apache FOP renderer.
           defined in the blocks above.
       -->
       <xsl:when test="local-name() = 'div' and (@class = 'block_left' or @class = 'block_right' or @class = 'figure_right_in_parent' or @class = 'center_figure_in_parent' or @class = 'figure_left_in_parent' or @id = 'page_footer_with_page_number' or @id = 'page_footer')"></xsl:when>
+      <!--
+          PDF/A does not have an element strong, so instead we assign it Span.
+      -->
+      <xsl:when test="local-name() = 'strong'">
+        <xsl:attribute name="role">Span</xsl:attribute>
+      </xsl:when>
+      <!--
+          PDF/A does not have an element em, so instead we assign it Span.
+      -->
+      <xsl:when test="local-name() = 'em'">
+        <xsl:attribute name="role">Span</xsl:attribute>
+      </xsl:when>
+      <!--
+          PDF/A does not have elements ul, ol and li, so instead we pass.
+      -->
+      <xsl:when test="local-name() = 'ul' or local-name() = 'ol' or local-name() = 'li'"></xsl:when>
       <!--
           PDF/A does not have an element img, but use the element Figure instead.
       -->

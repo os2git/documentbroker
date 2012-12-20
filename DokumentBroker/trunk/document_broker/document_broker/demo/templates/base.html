@@ -7,10 +7,19 @@
         {% endblock %}
         <link rel="stylesheet" href="{{ broker_url }}/media/files/styling/style.css" media="all"/>
         <script type="text/javascript" src="http://code.jquery.com/jquery-latest.pack.js"></script>
-		<script type="text/javascript" src="{{ broker_url }}/media/files/styling/broker.js"></script>
+	<script type="text/javascript" src="{{ broker_url }}/media/files/styling/broker.js"></script>
+	<script type="text/javascript" src="{{ broker_url }}/media/files/styling/tiny_mce/tiny_mce.js"></script>
+
     </head>
 
     <body>
+		<div id="spinner" class="spinner" style="display:none;">
+            <!--
+            Spinner image created with http://ajaxload.info/
+            -->
+            <img src="{{ broker_url }}/media/files/styling/spinner.gif" />
+			Dokument genereres...
+		</div>
 
         {% block content %} {% endblock %}
 

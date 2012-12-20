@@ -1,6 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script type="text/javascript">
+  tinyMCE.init({
+    theme : "advanced",
+    plugins : "paste",
+    width : 449,
+    height : 200,
+    theme_advanced_buttons1 : "bold,italic,underline,separator,bullist,numlist",
+    theme_advanced_buttons2 : "",
+    theme_advanced_buttons3 : "",
+    theme_advanced_path : false,
+    paste_text_sticky : true,
+    paste_text_sticky_default : true,
+    theme_advanced_statusbar_location : "none",
+    entity_encoding : "raw",
+    mode : "specific_textareas",
+    editor_selector : "tinymce-enabled",
+    language : "da"
+  });
+</script>
 <div id="page-wrapper">  
     <div id="view-wrapper">
         <img id="preview-img" src="{{ image }}"/>
@@ -10,10 +29,20 @@
         <h3>Udfyld skabelonens felter</h3>
         <form id="fields_form" method="POST" action="." name="submitform">
             <input type="hidden" name="preview_format" id="id_preview_format" />
+            <input type="hidden" id="number_of_fields" value="{{ fields|length }}" />
+            <input type="hidden" id="authentication" value="{{ authentication }}" />
+            <input type="hidden" id="template_id" value="{{ template_id }}" />
             {% csrf_token %}
             <p>
-            {% for field in feilds %}
-            <label for="id_document_field_{{ forloop.counter0 }}">{{ field }}:</label><input name="document_field_{{ forloop.counter0 }}" id="id_document_field_{{ forloop.counter0 }}" type="text" />
+            {% for field in fields %}
+              <label for="id_document_field_{{ forloop.counter0 }}">
+              <input type="hidden" id="id_field_name_{{ forloop.counter0 }}" value="{{ field.name }}">
+	      {% if field.type == 'HTML' %}{{ field.name|slice:"6:" }}:</label>
+	        <textarea name="document_field_{{ forloop.counter0 }}" id="id_document_field_{{ forloop.counter0 }}" class="tinymce-enabled" /></textarea>
+	      {% else %}{{ field.name }}:</label>
+	        <input name="document_field_{{ forloop.counter0 }}" id="id_document_field_{{ forloop.counter0 }}" type="text" />
+	      {% endif %}
+
             {% endfor %}
             <br style="clear:both;"/>
             <ul class="foldud">

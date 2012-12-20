@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "configuration.clientsystem", "fields": {"user_authentication": "e13e9b0214aea8138b81ade09989db159af80237", "description": "Pre-installed client system to allow acces for template server.", "client": 1, "uuid": "c9bf43ad-91ee-4706-a4de-4df3d53b45ef", "name": "Template server"}}]

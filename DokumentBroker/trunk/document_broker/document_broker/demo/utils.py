@@ -46,6 +46,12 @@ def get_template_fields(template):
     return ts.get_template_fields(template)
 
 
+def get_template_fields_adv(template):
+    """Get the fields available for the chosen template."""
+    ts = TemplateServer(TEMPLATE_URL)
+    return ts.get_template_fields_adv(template)
+
+
 def generate_document(template, fields):
     """Generate a document from a template."""
     db = DocumentBroker(BROKER_URL)
@@ -65,6 +71,12 @@ def get_thumbnail_image(template):
     """Get the thumbnail images if one exists otherwiser return None"""
     ts = TemplateServer(TEMPLATE_URL)
     return ts.get_thumbnail_image(template)
+
+
+def get_example_image(template):
+    """Get the thumbnail images if one exists otherwiser return None"""
+    ts = TemplateServer(TEMPLATE_URL)
+    return ts.get_example_image(template)
 
 
 def acknowledge_document(url):

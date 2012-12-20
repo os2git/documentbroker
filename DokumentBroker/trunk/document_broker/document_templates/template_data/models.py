@@ -32,6 +32,7 @@ from plugins import PluginManager
 import xmlrpclib
 import urllib
 import threading
+import time
 
 
 class ClientSystem(models.Model):
@@ -116,6 +117,22 @@ class create_supporting_files(threading.Thread):
         This method is called when a template is saved.
         We create the fo file and the image files here.
         """
+        template_ready = False
+        count = 0
+        while (not template_ready):
+            the_file = os.path.join(
+                settings.MEDIA_ROOT,
+                "files/" + self._file_path
+            )
+            template_ready = os.path.isfile(
+                os.path.join(
+                    settings.MEDIA_ROOT,
+                    "files/" + self._file_path
+                )
+            )
+            print str(the_file) + " NOT READY " + str(count)
+            count += 1
+            time.sleep(1)
         bs = get_broker_server()
         (_, extension) = os.path.splitext(self._file_path)
         extension = extension.strip('.').upper()
@@ -125,29 +142,30 @@ class create_supporting_files(threading.Thread):
                 or extension == "HTM"
                 and self.do_output_pdf
         ):
-            """ We generate an XSL-FO template """
-            (fo_url, hash) = bs.generate_fo_template(
-                    self._uuid, self._fo_file_path)
-            try:
-                """ We fetch and save the file """
-                fo_handle = urllib.urlopen(fo_url)
-                fo_data = fo_handle.read()
-                fo_handle.close
-            except Exception as e:
-                print "An error ocurred while reading the FO file: " + str(e)
-            try:
-                with open(os.path.join(
-                    settings.MEDIA_ROOT, self._fo_file_path
-                ), 'w') as fo_out:
-                    fo_out.write(str(fo_data))
-                fo_out.close
-            except Exception as e:
-                print "An error ocurred while saving the FO file: " + str(e)
-            """ check the hash sum """
-            # TODO: do the check
-            """ And finally we acknowledge the file on the broker. """
-            bs.acknowledge_document(self._fo_file_path[
-                self._fo_file_path.rfind('/'):])
+            if self._fo_file_path != "":
+                """ We generate an XSL-FO template """
+                (fo_url, hash) = bs.generate_fo_template(
+                        self._uuid, self._fo_file_path)
+                try:
+                    """ We fetch and save the file """
+                    fo_handle = urllib.urlopen(fo_url)
+                    fo_data = fo_handle.read()
+                    fo_handle.close
+                except Exception as e:
+                    print "An error ocurred while reading the FO file: "
+                try:
+                    with open(os.path.join(
+                        settings.MEDIA_ROOT, self._fo_file_path
+                    ), 'w') as fo_out:
+                        fo_out.write(str(fo_data))
+                    fo_out.close
+                except Exception as e:
+                    print "An error ocurred while saving the FO file: "
+                """ check the hash sum """
+                # TODO: do the check
+                """ And finally we acknowledge the file on the broker. """
+                bs.acknowledge_document(self._fo_file_path[
+                    self._fo_file_path.rfind('/'):])
 
             """
             We generate a thumbnail image and an example image for the
@@ -248,7 +266,8 @@ class Template(models.Model):
 
     file = models.FileField(_('File'), upload_to='files')
 
-    precompiled_file = models.CharField(_('precompiled_file'), max_length=255)
+    precompiled_file = models.CharField(_('precompiled_file'), max_length=255,
+        default="")
 
     def _get_url(self):
         return self.file.url
@@ -262,41 +281,48 @@ class Template(models.Model):
         if self.file != self._old_file:
             self.version = self.version + 1
             """
-            Couldn't make the commit keyword work on the save method.
-            pre_save=super(Template, self).save(commit=False, *args, **kwargs)
-            Except: save() got an unexpected keyword argument 'commit'
-
-            This is a dirty way to find the next file:
+            We check if template contains HTML input fields.
             """
-            found = True
-            i = 0
-            while found:
+            file_contents = self.file.read()
+            if not "#[HTML]" in file_contents:
                 """
-                We traverse the files with this name and set the fo output
-                file to be the next one in the row.
+                Couldn't make the commit keyword work on the save method.
+                pre_save=
+                super(Template, self).save(commit=False, *args, **kwargs)
+                Except: save() got an unexpected keyword argument 'commit'
+
+                This is a dirty way to find the next file:
                 """
-                wo_ext = str(self.file.name)[:str(self.file.name).rfind(".")]
-                ext = str(self.file.name)[str(self.file.name).rfind("."):]
-                if i == 0:
-                    file_name = "files/"
-                    file_name += wo_ext
-                else:
-                    file_name += wo_ext
-                    file_name += "_" + str(i)
-                try:
-                    the_file = os.path.join(
-                        settings.MEDIA_ROOT,
-                        file_name + ext
-                    )
-                    with open(the_file, 'r') as f:
+                found = True
+                i = 0
+                while found:
+                    """
+                    We traverse the files with this name and set the fo output
+                    file to be the next one in the row.
+                    """
+                    wo_ext = str(self.file.name)
+                    wo_ext = wo_ext[:str(self.file.name).rfind(".")]
+                    ext = str(self.file.name)[str(self.file.name).rfind("."):]
+                    if i == 0:
                         file_name = "files/"
-                        found = True
-                except Exception as e:
-                    fo_file_path = file_name + ".fo"
-                    found = False
-                i += 1
-            self.precompiled_file = fo_file_path
-            plugin_mappings = bs.get_plugin_mappings()
+                        file_name += wo_ext
+                    else:
+                        file_name += wo_ext
+                        file_name += "_" + str(i)
+                    try:
+                        the_file = os.path.join(
+                            settings.MEDIA_ROOT,
+                            file_name + ext
+                        )
+                        with open(the_file, 'r') as f:
+                            file_name = "files/"
+                            found = True
+                    except Exception as e:
+                        fo_file_path = file_name + ".fo"
+                        found = False
+                    i += 1
+                self.precompiled_file = fo_file_path
+        plugin_mappings = bs.get_plugin_mappings()
         # Actual save
         super(Template, self).save(*args, **kwargs)
         # After save - extract field if file changed.
@@ -308,17 +334,22 @@ class Template(models.Model):
             plugin_mappings = db.get_plugin_mappings()
             plugin = PluginManager.get_plugin(plugin_mappings[extension])
             fields = plugin.extract_document_fields(str(self.file.path))
-        # Actual save
-        super(Template, self).save(*args, **kwargs)
-        print "SAVED SAVED SAVED SAVED"
-        # After save - extract field if file changed.
-        if self.file != self._old_file:
             existing_fields = Field.objects.filter(document=self)
 
             for name, content_type in fields:
                 if name not in [f.name for f in existing_fields]:
+                    """ We set the default input type to be text. """
+                    input_type = "TEXT"
+                    """
+                    We check if the field take HTML input and declare the input
+                    type alike.
+                    """
+                    if len(name) > 7:
+                        if name[:6] == "[HTML]":
+                            input_type = "HTML"
+                            self.precompiled_file = None
                     Field.objects.create(
-                        name=name, type="TEXT",
+                        name=name, type=input_type,
                         content_type="string", document=self)
 
 
@@ -334,7 +365,8 @@ class Field(models.Model):
         choices=[
             ("TEXT", _("Text")),
             ("NUMBER", _('Number')),
-            ("DATE", _("Date"))
+            ("DATE", _("Date")),
+            ("HTML", _("HTML"))
         ],
         max_length=255)
     content_type = models.CharField(
