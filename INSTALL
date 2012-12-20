@@ -13,19 +13,19 @@ systems that support networking and Python, but the installation process will
 be more manual. Refer to the INSTALL.manual file for more information about the
 setup.
 
-NOTE: Since the template system will by default listen on port 8000, the Apache
-server MUST be set up to listen on this port in order for the template server
-to work. This means that something like these two lines must be present in
-/etc/apache2/ports.conf:
+NOTE: The template server includes a gallery application called Photologue
+which may be used to upload pictures for inclusion in documents.
 
-    NameVirtualHost *:8000
-    Listen 8000
+This will NOT work out of the box, however, due to a bug in the packaging of
+the Python Imaging Library (PIL). We have decided not to include a patch for
+this in the installation script because we hope that the bug may be fixed
+upstream.
 
+In the meanwhile, if you wish to enable users to upload images, you MUST enable
+proper JPEG support in PIL by following the instructions in this forum post:
 
-In order to access the site, the port 8000 will also have to be open on the
-server's firewall as well as your own. Alternatively, a proxy may be set up to
-redirect from the standard port 80, but that is beyond the scope of this
-manual.
+http://ubuntuforums.org/showpost.php?p=10804763&postcount=2
+
 
 DOWNLOAD AND UNPACK
 +++++++++++++++++++
@@ -56,7 +56,7 @@ distribution, e.g. /home/db/document_broker-0.1.3/ and call the install script:
     ./install.sh <broker-domain> [<template-domain>]
 
 The parameter <broker-domain> is the full domain name on which you wish to
-locate the document broker but without the "www", e.g.
+locate the document broker" (the Fully Qualified Domain Name or FQDN), e.g.
 "document-broker.magenta-aps.dk" (this is the default).
 
 During the installation, you will be prompted a number of times, mainly to
@@ -65,7 +65,8 @@ inform you what's happening and ask you to confirm.
 NOTE: A working internet connection with access to Ubuntu/Debian repositories
 and Python packages (PyPI) is required for this script to work. If some
 repository specified in /etc/apt/sources.list or the Python Package Index is
-unavailable, this script will fail. In that case, please try again later.
+unavailable, the script will fail and terminate. In that case, please try 
+again later.
 
 * If required packages are missing on your system, you will be informed that
   they will be installed:
@@ -84,22 +85,25 @@ unavailable, this script will fail. In that case, please try again later.
       This may take a while ...
 
   This process will download and install a large number of Python packages, so 
-  please be patient and wait until the next prompt appears.
+  please be patient and wait until the next prompt appears. Do not hit ENTER or
+  otherwise enter characters on the keyboard.
 
 * Next, the Apache setup will be generated and copied to your
   /etc/apache2/sites-available:
   
       Setting up Apache ... press ENTER to continue, CTRL-C to abort.    
 
-  This will not take a lot of time. Note that if you have special requirements
-  regarding paths, domain names or ports, you will have to modify the Apache
-  setup files manually after the installation is complete.
+  This will not take a lot of time. 
+  
+  NOTE: If you have special requirements regarding paths, domain names
+  or ports, you will have to modify the Apache setup files manually
+  after the installation is complete.
 
 * You are now prompted to create the databases required:
 
       Setup succeeded so far. Press ENTER to set up database, CTRL-C to abort.
 
-  You will be asked to create a super user for each database - please enter
+  You will be asked to create a super user for EACH database - please enter
   suitable login details. 
 
   NOTE: An SQLite database is now used by default. If you require a PostgreSQL
@@ -120,14 +124,14 @@ unavailable, this script will fail. In that case, please try again later.
       http://aarhus.magenta-aps.dk/document_broker/admin/
 
       Access the templates admin site via:
-      http://aarhus.magenta-aps.dk:8000/document_templates/admin/
+      http://aarhus.magenta-aps.dk/document_templates/admin/
 
       Access the demo site via:
       http://aarhus.magenta-aps.dk/document_broker/demo/
 
 
 During installation, output from apt-get and the Python installer is written to
-the file install_log.txt. If something goes wrong during installation, please
+the file install_log.txt.  If something goes wrong during installation, please
 refer to that log file and the terminal output to troubleshoot. You may also
 have to modify the default Apache configuration and/or check your firewall
 settings.

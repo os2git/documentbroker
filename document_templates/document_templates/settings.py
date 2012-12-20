@@ -180,6 +180,7 @@ XMLRPC_METHODS = (
     ('template_data.views.get_templates', 'get_templates'),
     ('template_data.views.get_template_url', 'get_template_url'),
     ('template_data.views.get_template_fields', 'get_template_fields'),
+    ('template_data.views.get_template_fields_adv', 'get_template_fields_adv'),
     ('template_data.views.get_thumbnail_image', 'get_thumbnail_image'),
     ('template_data.views.get_example_image', 'get_example_image'),
 )

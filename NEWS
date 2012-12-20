@@ -1,3 +1,43 @@
+
+* Version 0.1.4, December 19, 2012.
+
+New in this version:
+
+ - Ticket 6922: TinyMCE Editor added to the demo system.
+
+ - Ticket 7144: Change flow in demo, so "Preview" button will create a thumbnail
+   where the fields are merged.
+
+ - Ticket 7151: Fix bug in thumbnail retrieval which caused problems in the
+   demo system.
+
+ - Ticket 7152: Fix path error in several HTML templates.
+
+ - Ticket 7155: Fix merge error from version 0.1.3 which caused the
+   generate_preview method to disappear.
+
+ - Ticket 7157: Fix bug in thread which caused it not to wait until generation
+   of thumbnails and XSL-FO template is complete.
+
+ - Ticket 7186: Previews are now generated asynchronously and displayed on-page
+   in the demo application. In order to achieve this, an AJAX method has been
+   developed which calls generate_preview and displays the image.
+
+ - Ticket 7187: Display thumbnail of document instead of example image in field
+   data form in demo application.
+
+ - Ticket 7192: Fix data transfer bug in REST interface.
+
+ - Ticket 7214: Bug fixes and improvements in installation script:
+    * Improved information to user during process.
+    * Apache port 8000 and ProxyPass for template server added automatically.
+    * Preinstalled client system allows immediate upload of templates without
+      further setup.
+    * Trailing '/' in FQDN parameter is removed.
+    * Script stops with an error message if the necessary repositories (for
+      installing dependencies) are not available.
+
+
 * Version 0.1.3, November 30, 2012.
 
 New in this version:

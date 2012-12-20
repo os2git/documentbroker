@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "configuration.client", "fields": {"name": "Template server", "description": "Default access for template server."}}]

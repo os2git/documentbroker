@@ -20,11 +20,14 @@ from django.template import RequestContext
 from django.http import HttpResponseNotFound
 
 from forms import SelectTemplateForm, FieldsForm, ResultForm
-from utils import generate_document, generate_preview, get_template_fields
+from utils import (generate_document, generate_preview, get_template_fields,
+get_template_fields_adv)
 from utils import get_templates, get_all_template_data
 from utils import validate_sha1, acknowledge_document
-from utils import get_thumbnail_image
-from client.document_broker_settings import TEMPLATE_URL, BROKER_BASE_URL
+from utils import get_thumbnail_image, get_example_image
+from client.document_broker_settings import (TEMPLATE_URL, BROKER_BASE_URL,
+CLIENT_ID, CLIENT_PASSWORD)
+from broker.views import get_authorization
 
 
 def select_template(request):
@@ -90,7 +93,7 @@ def show_fields(request, template=None):
     necessary"""
     # TODO: Refactor this spaghetti!
     if template:
-        fields = get_template_fields(template)
+        fields = get_template_fields_adv(template)
         form = FieldsForm(request.POST or None, fields=fields)
         if form.is_valid():
             if (
@@ -136,16 +139,19 @@ def show_fields(request, template=None):
             """
             We fetch an example image if such exists.
             """
-            image = get_thumbnail_image(template)
+            image = get_example_image(template)
             if image != "":
                 image = TEMPLATE_URL + image
             else:
                 image = "media/files/styling/trans.gif"
+            authorization = get_authorization(CLIENT_ID, CLIENT_PASSWORD)
             return render_to_response(
                 'new_show_fields.html',
                 {
                     'form': form,
-                    'feilds': fields,
+                    'fields': fields,
+                    'template_id': template,
+                    'authentication': authorization,
                     'image': image,
                     'broker_url': BROKER_BASE_URL
                 },

@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # Installs the virtual environment and the necessary Python packages
 # needed for running the document broker web service.
-# ALWAYS RUN IN DIRECTORY ROOT AFTER CHECKING OUT FROM GIT!
+# NOTE: This script is called from the "install.sh" script.
+
+# Simple error function
 
 if [ -e ./bin/activate ]
 then
-    echo "virtual environment already installed"
+    echo "virtual environment already installed" 1>&2
     exit
 fi
 
@@ -27,32 +29,24 @@ cd ..
 
 # Install Django and additional packages
 
-pip install Django
+PIP_PACKAGES=( Django psycopg2 django_xmlrpc lxml pisa reportlab html5lib pil
+django-tastypie  django-photologue pep8==1.2 )
 
-# Install PostgreSL interface. Assume Postgres itself is already installed.
-pip install psycopg2
 
-# Install XML-RPC capability
-pip install django_xmlrpc
+for  package in "${PIP_PACKAGES[@]}"
+do
+    pip install $package
 
-# Install lxml - a requirement for lpod to work
-# If this fails, you need to install libxml2-dev and libxslt-dev.
-pip install lxml
-
-# PISA and dependencies for PDF generation
-pip install pisa
-pip install reportlab
-pip install html5lib
-pip install pil
-pip install django-tastypie
-
-# Photologue - note, PIL MUST be reinstalled using the instructions in this
-# post: http://ubuntuforums.org/showpost.php?p=10804763&postcount=2 if
-# Photologue JPEG support is to work
-pip install django-photologue
-
-# PEP8 module for testing purposes. Currently we need v. 1.2
-pip install pep8==1.2
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "" 1>&2
+        echo "ERROR: Unable to install Python package <$package>." 1>&2
+        echo -n "Please check your network connection. " 1>&2
+        echo "A remote server may be down - please retry later. " 1>&2
+        echo "" 1>&2
+        exit -1
+    fi
+done
 
 # Install lpod 0.9.3 - not available through pip or easy_install.
 third_party/install_lpod.sh

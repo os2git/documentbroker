@@ -64,7 +64,7 @@ class ExtractFieldsTarget(object):
 
     def data(self, data):
         if not self._in_style_tag:
-            user_fields = re.findall(r'#\w+', data)
+            user_fields = re.findall(r'#[\[\w\]]+', data)
             for w in user_fields:
                 self._fields.append(w[1:])
 
@@ -87,6 +87,7 @@ class XHTMLPlugin(DocumentPlugin):
         """Generate PDF/XHTML document from template.
 
         Log error and possibly throw exception in case of failure."""
+        print "TEMPLATE PATH: " + template_path
         try:
             #xhtml2pdf(xhtml_string, output_path)
             """
@@ -102,7 +103,19 @@ class XHTMLPlugin(DocumentPlugin):
                     contents_string = f.read()  # slurp!
                     for (field, value) in fields.items():
                         # Remove possibly noxious HTML tags from input
-                        value = escape(value)
+                        if len(field) > 7:
+                            if field[:6] != "[HTML]":
+                                value = escape(value)
+                            else:
+                                """
+                                TinyMCE puts &nbsp; as a whitespace but we
+                                do not want that to appear in our XHTML
+                                because FOP does not tolerate it.
+                                Instead we replace it with a whitespace.
+                                """
+                                value = value.replace('&nbsp;', ' ')
+                        else:
+                            value = escape(value)
                         value = value.encode('utf-8')
                         contents_string = contents_string.replace(
                                 '#' + field, value
@@ -111,6 +124,7 @@ class XHTMLPlugin(DocumentPlugin):
                 if ext == "FO":
                     fo2pdf(contents_string, output_path)
                 else:
+                    print "CONTENST: " + contents_string
                     xhtml2pdf(contents_string, output_path)
             else:
                 with open(template_path, 'r') as f:
@@ -150,10 +164,23 @@ class XHTMLPlugin(DocumentPlugin):
                 if fields is not None:
                     for (field, value) in fields.items():
                         # Remove possibly noxious HTML tags from input
-                        value = escape(value)
-                        value = value.encode('utf8')
-                        xhtml_string = xhtml_string.replace('#' +
-                            field, value)
+                        if len(field) > 7:
+                            if field[:6] != "[HTML]":
+                                value = escape(value)
+                            else:
+                                """
+                                TinyMCE puts &nbsp; as a whitespace but we
+                                do not want that to appear in our XHTML
+                                because FOP does not tolerate it.
+                                Instead we replace it with a whitespace.
+                                """
+                                value = value.replace('&nbsp;', ' ')
+                        else:
+                            value = escape(value)
+                        value = value.encode('utf-8')
+                        xhtml_string = xhtml_string.replace(
+                                '#' + field, value
+                        )
             if resolusion == 0:
                 resolusion = 72
             ImagePreview.generate_preview(xhtml_string, output_path,
@@ -162,13 +189,43 @@ class XHTMLPlugin(DocumentPlugin):
             raise
 
     def generate_template_image(self, template_path, output_path, resolusion,
-            image_type):
+            image_type, fields):
         """Generate preview from template.
 
         Log error and possibly throw exception in case of failure."""
         extension = template_path[template_path.rfind("."):]
-        with open(template_path, 'r') as f:
-            xhtml_string = f.read()  # slurp!
+        if image_type != "example":
+            try:
+                with open(template_path, 'r') as f:
+                    xhtml_string = f.read()  # slurp!
+            except Exception as e:
+                raise
+        else:
+            try:
+                with open(template_path, 'r') as f:
+                    xhtml_string = f.read()  # slurp!
+                    for field in fields:
+                        field = field.encode("utf-8")
+                        styled_field = '<div style="\
+                        color: red; \
+                        font-weight: bold;">{}</div>'.format(field)
+                        if len(field) > 7:
+                            if field[:6] == "[HTML]":
+                                """
+                                When dealing with HTML-input we show
+                                an area instead of only the field
+                                name.
+                                """
+                                styled_field = '<div style="\
+                                border: 2px solid red; \
+                                background-color: #fcc; \
+                                text-align: center; \
+                                padding: 1cm;">{}</div>'.format(styled_field)
+                        styled_field = styled_field.encode("utf-8")
+                        xhtml_string = xhtml_string.replace('#' +
+                            field, styled_field)
+            except Exception as e:
+                raise
         ImagePreview.generate_template_image(
             xhtml_string, output_path, image_type, resolusion, extension
         )

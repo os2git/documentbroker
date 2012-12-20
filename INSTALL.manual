@@ -44,6 +44,21 @@ Library is compiled with JPEG support. See this forum article for details:
 http://ubuntuforums.org/showpost.php?p=10804763&postcount=2
 
 
+NOTE: Since the template system will by default listen on port 8000, the Apache
+server MUST be set up to listen on this port in order for the template server
+to work. This means that something like these two lines must be present in
+/etc/apache2/ports.conf:
+
+    NameVirtualHost *:8000
+    Listen 8000
+
+
+In order to access the site, the port 8000 will also have to be open on the
+server's firewall as well as your own. Alternatively, a proxy may be set up to
+redirect from the standard port 80, but that is beyond the scope of this
+manual.
+
+
 INSTRUCTIONS
 ============
 

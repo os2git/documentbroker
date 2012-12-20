@@ -51,6 +51,11 @@ class DocumentBroker(XMLRPCProxy):
         return self._rpc_srv.generate_document(user_authentication,
                 template_id, fields)
 
+    def generate_preview(self, user_authentication, template, fields,
+            return_format, resolusion):
+        return self._rpc_srv.generate_preview(user_authentication, template,
+                 fields, return_format, resolusion)
+
     def acknowledge_document(self, user_authentication, document):
         return self._rpc_srv.acknowledge_document(user_authentication,
                 document)

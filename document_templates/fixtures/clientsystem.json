@@ -1,0 +1,1 @@
+[{"pk": 2, "model": "template_data.clientsystem", "fields": {"description": "Test-klient til kommunikation med brokeren.", "client": "Template server", "name": "Template server", "uuid": "c9bf43ad-91ee-4706-a4de-4df3d53b45ef"}}]

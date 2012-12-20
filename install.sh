@@ -26,6 +26,8 @@
 
 if [ "$1" != "" ]; then
     BROKER_DOMAIN=$1
+    # Remove trailing / from domain, if any.
+    BROKER_DOMAIN=${BROKER_DOMAIN%/}
 else
     BROKER_DOMAIN=document-broker.magenta-aps.dk
     echo "WARNING: No domain specified. Setup will not work unless you adjust
@@ -42,9 +44,13 @@ else
     TEMPLATE_DOMAIN=$BROKER_DOMAIN
 fi
 
-echo $SERVER_DOMAIN
-# Install missing dependencies
-DEPENDENCIES=( python-virtualenv python-dev apache2 libapache2-mod-wsgi git fop libxml2-dev libxslt1-dev openssl libjpeg8 libjpeg8-dev postgresql-common libpq-dev)
+echo $TEMPLATE_DOMAIN
+
+
+# Install missing dependencies if necessary
+DEPENDENCIES=( python-virtualenv python-dev apache2 libapache2-mod-wsgi git fop
+libxml2-dev libxslt1-dev openssl libjpeg8 libjpeg8-dev postgresql-common
+libpq-dev ttf-liberation )
 
 PKGSTOINSTALL=""
 
@@ -60,15 +66,45 @@ if [ "$PKGSTOINSTALL" != "" ]; then
     echo " The following packages will be installed: $PKGSTOINSTALL" 
     echo -n "Press ENTER to continue, CTRL-C to abort."
     read ENTER
+    
+    # Step 1: Check for valid APT repositories.
+
+    sudo apt-get update &> /dev/null
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "" 1>&2
+        echo "ERROR: Apt repositories are not valid or cannot be reached from your network." 1>&2
+        echo "Please fix and retry" 1>&2
+        echo "" 1>&2
+        exit -1
+    else
+        echo "Repositories OK: Installing packages"
+    fi
+
+    # Step 2: Do the actual installation. Abort if it fails.
 
     sudo apt-get -y install $PKGSTOINSTALL > install_log.txt
+    RETVAL=$?
+    if [ $RETVAL -ne 0 ]; then
+        echo "" 1>&2
+        echo "ERROR: Installation of dependencies failed." 1>&2
+        echo "Please note that \"universe\" repository MUST be enabled" 1>&2
+        echo "" 1>&2
+        exit -1
+    fi
 fi
 
+# Always reinstall virtualenv - make sure dependencies are checked.
+rm -rf bin
 echo -n "Setting up virtualenv. Press ENTER to continue, CTRL-C to abort."
 read ENTER
 echo "This may take a while ..."
 ./create_virtualenv >> install_log.txt
-
+RETVAL=$?
+if [ $RETVAL -ne 0 ]; then
+    echo "Installation failed" 1>&2
+    exit -1
+fi
 
 echo -n "Setting up Apache ... press ENTER to continue, CTRL-C to abort."
 
@@ -101,7 +137,10 @@ WSGIProcessGroup document_broker
 ErrorLog /var/log/document_broker/broker/error.log
 CustomLog /var/log/document_broker/broker/access.log combined
 
-Alias /media $INSTALL_DIR/document_broker/site-media
+ProxyPass /document_templates http://$TEMPLATE_DOMAIN:8000/document_templates
+ProxyPassReverse /document_templates http://$TEMPLATE_DOMAIN:8000/document_templates
+
+Alias /document_broker/media $INSTALL_DIR/document_broker/site-media
 <Directory $INSTALL_DIR/document_broker/site-media>
 Options -Indexes
 Order deny,allow
@@ -140,7 +179,7 @@ WSGIProcessGroup document_templates
 ErrorLog /var/log/document_broker/templates/error.log
 CustomLog /var/log/document_broker/templates/access.log combined
 
-Alias /media $INSTALL_DIR/document_templates/site-media
+Alias /document_templates/media $INSTALL_DIR/document_templates/site-media
 <Directory $INSTALL_DIR/document_templates/site-media>
 Options -Indexes
 Order deny,allow
@@ -162,9 +201,11 @@ EOF
 
 sudo mv $DT_TMP $APACHE_SITES/document_templates
 
-#cd /etc/apache2/sites-available
-#sudo ln -s $INSTALL_DIR/document_broker/etc/document_broker.apache.conf ./document_broker
-#sudo ln -s $INSTALL_DIR/document_templates/etc/document_templates.apache.conf ./document_templates
+# Make Apache listen on port 8000, if it doesn't already.
+ if [[ ! $(netstat -tulpn 2> /dev/null | grep 8000) ]]; then 
+     echo 'Listen 8000' > /tmp/listen8000; 
+     sudo mv /tmp/listen8000 /etc/apache2/conf.d/
+ fi
 
 # Create Apache log files
 sudo mkdir -p /var/log/document_broker/templates/
@@ -183,6 +224,20 @@ read ENTER
 
 cd $INSTALL_DIR
 
+# Create site-media directories if not already present
+
+BROKER_MEDIA=document_broker/site-media
+TEMPLATE_MEDIA=document_templates/site-media
+
+mkdir -p $BROKER_MEDIA
+mkdir -p $TEMPLATE_MEDIA
+
+sudo adduser $USER www-data &> /dev/null
+sudo chown -R www-data:www-data $BROKER_MEDIA
+sudo chmod -R g+w $BROKER_MEDIA
+sudo chown -R www-data:www-data $TEMPLATE_MEDIA
+sudo chmod -R g+w $TEMPLATE_MEDIA
+
 
 source bin/activate
 
@@ -190,17 +245,37 @@ mkdir .db &> /dev/null
 
 cd document_templates 
 
-python manage.py syncdb
+echo ""
+echo "NOTE: Creating template database and login user."
+echo "When prompted, enter your desired login data for template administration."
+python manage.py syncdb -v 0
 
 cd ../document_broker
 
-python manage.py syncdb
+echo ""
+echo "NOTE: Creating document broker database and login user."
+echo "When prompted, enter your desired login data for document broker administration."
+python manage.py syncdb -v 0
+
+cd ..
+
+# Now import necessary fixture data so user can upload templates right away.
+
+cd document_broker
+python manage.py loaddata fixtures/clients.json
+python manage.py loaddata fixtures/clientsystem.json
+python manage.py loaddata fixtures/pluginmapping.json
+
+cd ../document_templates
+python manage.py loaddata fixtures/clientsystem.json
 
 cd ..
 
 sudo chmod -R g+w .db
 sudo chgrp -R www-data .db
 
+sudo a2enmod proxy
+sudo a2enmod proxy_http
 sudo a2ensite document_broker
 sudo a2ensite document_templates
 
@@ -232,15 +307,13 @@ unified configuration format for all platforms - dependent on how much
 configuration we're going to actually need.
 """
 
-BROKER_BASE_URL = 'http://$BROKER_DOMAIN'
-BROKER_URL = (BROKER_BASE_URL +
-        '/document_broker/broker-xml/')
+BROKER_BASE_URL = 'http://$BROKER_DOMAIN/document_broker'
+BROKER_URL = (BROKER_BASE_URL + '/broker-xml/')
 
-TEMPLATE_BASE_URL = 'http://$TEMPLATE_DOMAIN:8000'
-TEMPLATE_URL = (TEMPLATE_BASE_URL +
-        '/document_templates/template-xml/')
-CLIENT_ID = '553b6807-851d-4b76-a4c1-3f683fc20de3'
-CLIENT_PASSWORD = "fa8019f4ea50a1eab471a816d111853dadbf52d7"
+TEMPLATE_BASE_URL = 'http://$TEMPLATE_DOMAIN/document_templates'
+TEMPLATE_URL = (TEMPLATE_BASE_URL + '/template-xml/')
+CLIENT_ID = 'c9bf43ad-91ee-4706-a4de-4df3d53b45ef'
+CLIENT_PASSWORD = "e13e9b0214aea8138b81ade09989db159af80237"
 
 # SSL client certificate settings. If SSL_DO_USE is set, the following two
 # parameters MUST be set, and must point to a valid certificate.
@@ -272,7 +345,7 @@ echo "Access the templates broker admin site via:
 http://$BROKER_DOMAIN/document_broker/admin/
 
 Access the templates admin site via:
-http://$TEMPLATE_DOMAIN:8000/document_templates/admin/
+http://$BROKER_DOMAIN/document_templates/admin/
 
 Access the demo site via:
 http://$BROKER_DOMAIN/document_broker/demo/"

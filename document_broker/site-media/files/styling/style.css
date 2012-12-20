@@ -12,9 +12,10 @@ hr {height:.07692307692em;color:#eee;background-color:#eee;border:0;}
 #temp-grid img {border:.1em solid #ddd;max-width:100%;}
 #temp-grid img:hover {cursor:pointer;}
 #temp-grid td {width:33.33333333%;text-align:left;vertical-align:top;padding:0 1em 1em 0;}
-label {float:left;clear:left;line-height:2em;width:6em;}
+label {/*float:left;clear:left;width:6em;*/display:block;margin-top:1em;}
 input,
-select {float:left;clear:right;line-height:1.5em;margin:.25em 0}
+select,
+textarea {/*float:left;clear:right;*/display:block;line-height:1.5em;margin:.25em 0}
 .foldud {float:left;width:33%;}
 .foldud,
 .foldud ul {margin:0;padding:0;list-style-type:none;display:inline;height:3em;line-height:3em;}
@@ -37,3 +38,4 @@ select {float:left;clear:right;line-height:1.5em;margin:.25em 0}
 .genpdf:active {border:2px inset #f3f3ff;}
 .hidden {display:none;}
 .visible {display:block !important;}
+.spinner {position: fixed;top: 50%;left: 50%;margin-left: -50px;margin-top: -50px;text-align:center;z-index:1234;overflow: auto;width: 100px;height: 102px;}

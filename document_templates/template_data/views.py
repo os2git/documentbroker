@@ -33,7 +33,7 @@ def get_templates(client_system_id):
     return_data = []
     for t in templates:
         file_path = os.path.join(settings.MEDIA_ROOT, t.file.name)
-        thumb_file = file_path[:file_path.rfind('.')] + "_32.png"
+        thumb_file = file_path[:file_path.rfind('.')] + "_thumbnail.png"
         if (os.path.isfile(thumb_file)):
             has_thumb = True
         else:
@@ -59,6 +59,14 @@ def get_template_fields(template_id):
     return [f.name for f in fields]
 
 
+def get_template_fields_adv(template_id):
+    """List all fields for this template with additional data"""
+    check_ssl_connection()
+    template = Template.objects.get(uuid=template_id)
+    fields = Field.objects.filter(document=template)
+    return [f for f in fields]
+
+
 def get_template(client_system_id, template_id):
     """
     Returns the requested template if it exists otherwise None is returnes
@@ -68,7 +76,7 @@ def get_template(client_system_id, template_id):
     template = Template.objects.filter(
         available_for__uuid=client_system_id
     ).filter(uuid__exact=template_id)
-    if not template[0].precompiled_file is None:
+    if template[0].precompiled_file != "":
         return_file = template[0].precompiled_file
     else:
         return_file = template[0].file.name
@@ -88,8 +96,13 @@ def get_thumbnail_image(template_id):
     Returns the thumbnail image for the requested template
     """
     url_prefix = settings.MEDIA_URL
-    template = Template.objects.filter(uuid__exact=template_id)
-    return template.file.name[:rfind('.')] + "_thumbnail.png"
+    template = Template.objects.get(uuid=template_id)
+    thumb_file = template.file.name[:template.file.name.rfind('.')]
+    thumb_file += "_thumbnail.png"
+    if os.path.isfile(os.path.join(settings.MEDIA_ROOT, thumb_file)):
+        return os.path.join(settings.MEDIA_URL, thumb_file)
+    else:
+        return ""
 
 
 def get_example_image(template_id):
@@ -97,5 +110,10 @@ def get_example_image(template_id):
     Returns the example image for the requested template
     """
     url_prefix = settings.MEDIA_URL
-    template = Template.objects.filter(uuid__exact=template_id)
-    return template.file.name[:rfind('.')] + "_example.png"
+    template = Template.objects.get(uuid=template_id)
+    example_file = template.file.name[:template.file.name.rfind('.')]
+    example_file += "_example.png"
+    if os.path.isfile(os.path.join(settings.MEDIA_ROOT, example_file)):
+        return os.path.join(settings.MEDIA_URL, example_file)
+    else:
+        return ""

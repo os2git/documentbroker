@@ -34,7 +34,7 @@ class FieldsForm(forms.Form):
         for i, field in enumerate(dynamic_fields):
             self.fields[
                 'document_field_{0}'.format(i)
-            ] = forms.CharField(label=field, required=False)
+            ] = forms.CharField(label=field['name'], required=False)
 
     def get_field_data(self):
         for name, value in self.cleaned_data.items():
